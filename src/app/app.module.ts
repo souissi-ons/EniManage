@@ -5,16 +5,16 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './components/login/login.component';
 import { UsersComponent } from './components/users/users.component';
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { SidebarComponent } from './components/sidebar/sidebar.component';
 
 @NgModule({
   declarations: [AppComponent],
   imports: [
     BrowserModule,
-    FontAwesomeModule,
     AppRoutingModule,
     LoginComponent,
     UsersComponent,
+    SidebarComponent,
   ],
   providers: [],
   bootstrap: [AppComponent],

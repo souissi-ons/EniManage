@@ -1,1 +1,21 @@
-<app-users></app-users>
+<div
+  class="app-container min-h-screen flex flex-col md:flex-row"
+  *ngIf="!isLoginPage()"
+>
+  <div class="p-4 md:hidden">
+    <img src="assets/logo.png" alt="Logo" class="max-w-[200px]" />
+  </div>
+
+  <div class="hidden md:block w-64 bg-gray-50 p-4 border-r border-gray-200">
+    <div class="mb-6">
+      <img src="assets/logo.png" alt="Logo" class="max-w-[200px]" />
+    </div>
+    <app-sidebar></app-sidebar>
+  </div>
+
+  <div class="flex-1 p-4 md:p-6">
+    <router-outlet></router-outlet>
+  </div>
+</div>
+
+<router-outlet *ngIf="isLoginPage()"></router-outlet>
