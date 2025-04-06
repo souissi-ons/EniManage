@@ -1,6 +1,11 @@
 export interface Users {
   id: number;
   name: string;
-  role: 'student' | 'club' | 'teacher';
   email: string;
+  password?: string;
+  phoneNumber: string;
+  birthDate: Date;
+  role: 'STUDENT' | 'CLUB' | 'TEACHER' | 'ADMIN';
+  description?: string;
+  logo?: string;
 }

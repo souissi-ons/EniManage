@@ -1,0 +1,246 @@
+<div class="p-8 rounded border border-gray-200">
+  <form [formGroup]="addUserForm" (ngSubmit)="onSubmit()">
+    <div class="mt-8 grid lg:grid-cols-2 gap-4">
+      <div>
+        <label for="name" class="text-md text-gray-700 block mb-1 font-bold"
+          >Name</label
+        >
+        <div class="mt-1">
+          <input
+            type="text"
+            name="name"
+            id="name"
+            formControlName="name"
+            class="bg-gray-100 border border-gray-200 rounded py-1 px-3 block focus:ring-teal-light focus:border-teal-light text-gray-700 w-full"
+            placeholder="Enter your name"
+          />
+
+          <div
+            *ngIf="
+              addUserForm.get('name')?.invalid &&
+              (addUserForm.get('name')?.dirty ||
+                addUserForm.get('name')?.touched)
+            "
+            class="mt-1 text-sm text-red-600"
+          >
+            <div *ngIf="addUserForm.get('name')?.hasError('required')">
+              Name is required.
+            </div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <label for="email" class="text-md text-gray-700 block mb-1 font-bold"
+          >Email</label
+        >
+        <div class="mt-1">
+          <input
+            type="text"
+            name="email"
+            id="email"
+            formControlName="email"
+            class="bg-gray-100 border border-gray-200 rounded py-1 px-3 block focus:ring-teal-light focus:border-teal-light text-gray-700 w-full"
+            placeholder="yourmail@provider.com"
+          />
+          <div
+            *ngIf="
+              addUserForm.get('email')?.invalid &&
+              (addUserForm.get('email')?.dirty ||
+                addUserForm.get('email')?.touched)
+            "
+            class="mt-1 text-sm text-red-600"
+          >
+            <div *ngIf="addUserForm.get('email')?.hasError('required')">
+              Email is required.
+            </div>
+            <div *ngIf="addUserForm.get('email')?.hasError('email')">
+              Invalid email format.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <label
+          for="phoneNumber"
+          class="text-md text-gray-700 block mb-1 font-bold"
+          >Phone number</label
+        >
+        <div class="mt-1">
+          <input
+            type="tel"
+            name="phoneNumber"
+            id="phoneNumber"
+            formControlName="phoneNumber"
+            class="bg-gray-100 border border-gray-200 rounded py-1 px-3 block focus:ring-teal-light focus:border-teal-light text-gray-700 w-full"
+            placeholder="0123456789"
+          />
+          <div
+            *ngIf="
+              addUserForm.get('phoneNumber')?.invalid &&
+              (addUserForm.get('phoneNumber')?.dirty ||
+                addUserForm.get('phoneNumber')?.touched)
+            "
+            class="mt-1 text-sm text-red-600"
+          >
+            <div *ngIf="addUserForm.get('phoneNumber')?.hasError('required')">
+              Phone number is required.
+            </div>
+            <div *ngIf="addUserForm.get('phoneNumber')?.hasError('pattern')">
+              Invalid phone number format.
+            </div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <label
+          for="birthDate"
+          class="text-md text-gray-700 block mb-1 font-bold"
+          >Birth date</label
+        >
+        <div class="mt-1">
+          <input
+            type="date"
+            name="birthDate"
+            id="birthDate"
+            formControlName="birthDate"
+            class="bg-gray-100 border border-gray-200 rounded py-1 px-3 block focus:ring-teal-dark focus:border-teal-light text-gray-700 w-full"
+            placeholder="(01/01/1993)"
+          />
+          <div
+            *ngIf="
+              addUserForm.get('birthDate')?.invalid &&
+              (addUserForm.get('birthDate')?.dirty ||
+                addUserForm.get('birthDate')?.touched)
+            "
+            class="mt-1 text-sm text-red-600"
+          >
+            <div *ngIf="addUserForm.get('birthDate')?.hasError('required')">
+              Birth date is required.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="lg:col-span-2">
+        <label class="text-md text-gray-700 block mb-3 font-bold">Role</label>
+        <div class="flex flex-wrap gap-3 lg:gap-16">
+          <label class="inline-flex items-center">
+            <input
+              type="radio"
+              name="role"
+              value="STUDENT"
+              class="h-5 w-5 text-teal-600 focus:ring-teal-500 border-gray-300"
+              formControlName="role"
+              checked
+            />
+            <span class="ml-2 text-gray-700">Student</span>
+          </label>
+          <label class="inline-flex items-center">
+            <input
+              type="radio"
+              name="role"
+              value="CLUB"
+              formControlName="role"
+              class="h-5 w-5 text-teal-600 focus:ring-teal-500 border-gray-300"
+            />
+            <span class="ml-2 text-gray-700">Club</span>
+          </label>
+          <label class="inline-flex items-center">
+            <input
+              type="radio"
+              name="role"
+              value="TEACHER"
+              formControlName="role"
+              class="h-5 w-5 text-teal-600 focus:ring-teal-500 border-gray-300"
+            />
+            <span class="ml-2 text-gray-700">Teacher</span>
+          </label>
+          <label class="inline-flex items-center">
+            <input
+              type="radio"
+              name="role"
+              value="ADMIN"
+              formControlName="role"
+              class="h-5 w-5 text-teal-600 focus:ring-teal-500 border-gray-300"
+            />
+            <span class="ml-2 text-gray-700">Admin</span>
+          </label>
+        </div>
+        <div
+          *ngIf="
+            addUserForm.get('role')?.invalid &&
+            (addUserForm.get('role')?.dirty || addUserForm.get('role')?.touched)
+          "
+          class="mt-1 text-sm text-red-600"
+        >
+          <div>
+            <div *ngIf="addUserForm.get('role')?.hasError('required')">
+              Role is required.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div
+      *ngIf="addUserForm.get('role')?.value === 'CLUB'"
+      class="lg:col-span-2"
+    >
+      <label
+        for="description"
+        class="text-md text-gray-700 block mb-1 font-bold"
+        >Description</label
+      >
+      <div class="mt-1">
+        <textarea
+          name="description"
+          id="description"
+          formControlName="description"
+          rows="4"
+          class="bg-gray-100 border border-gray-200 rounded py-1 px-3 block focus:ring-teal-light focus:border-teal-light text-gray-700 w-full"
+          placeholder="Enter club description"
+        ></textarea>
+      </div>
+    </div>
+
+    <div
+      *ngIf="addUserForm.get('role')?.value === 'CLUB'"
+      class="lg:col-span-2"
+    >
+      <label class="text-md text-gray-700 block mb-1 font-bold">Logo</label>
+      <div class="mt-1">
+        <input
+          type="file"
+          name="logo"
+          id="logo"
+          (change)="onFileSelected($event)"
+          accept="image/*"
+          class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-sm file:font-semibold file:bg-teal-50 file:text-teal-700 hover:file:bg-teal-100"
+        />
+        <div *ngIf="logoPreview" class="mt-2">
+          <img
+            [src]="logoPreview"
+            alt="Logo preview"
+            class="h-20 w-20 object-cover rounded"
+          />
+        </div>
+      </div>
+    </div>
+
+    <div class="space-x-4 mt-8">
+      <button
+        type="submit"
+        class="py-2 px-4 bg-teal-light text-white rounded hover:bg-teal-dark active:bg-teal-light disabled:opacity-50"
+        [class.bg-teal]="!addUserForm.invalid"
+        [class.hover:bg-teal-light]="!addUserForm.invalid"
+        [class.focus:ring-teal-light]="!addUserForm.invalid"
+        [class.bg-teal-dark]="addUserForm.invalid"
+        [class.cursor-not-allowed]="addUserForm.invalid"
+        [disabled]="addUserForm.invalid"
+      >
+        Save
+      </button>
+    </div>
+  </form>
+</div>
