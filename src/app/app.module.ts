@@ -4,18 +4,18 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './components/login/login.component';
-import { UsersComponent } from './components/User/users/users.component';
+import { UsersComponent } from './components/users/users/users.component';
 import { SidebarComponent } from './components/common/sidebar/sidebar.component';
 import { PopupComponent } from './components/common/popup/popup.component';
-import { AddUserComponent } from './components/User/add-user/add-user.component';
-import { UpdateUserComponent } from './components/User/update-user/update-user.component';
+import { AddUserComponent } from './components/users/add-user/add-user.component';
 import { ConfirmationDialogComponent } from './components/common/confirmation-dialog/confirmation-dialog.component';
 import { HttpClientModule } from '@angular/common/http';
-import { EventCardComponent } from './components/event-card/event-card.component';
-import { EventsComponent } from './components/events/events.component';
+import { EventCardComponent } from './components/events/event-card/event-card.component';
+import { EventsComponent } from './components/events/events/events.component';
+import { UpdateUserComponent } from './components/users/update-user/update-user.component';
 
 @NgModule({
-  declarations: [AppComponent, EventCardComponent, EventsComponent],
+  declarations: [AppComponent],
   imports: [
     BrowserModule,
     HttpClientModule,
@@ -27,6 +27,8 @@ import { EventsComponent } from './components/events/events.component';
     AddUserComponent,
     UpdateUserComponent,
     ConfirmationDialogComponent,
+    EventCardComponent,
+    EventsComponent,
   ],
   providers: [],
   bootstrap: [AppComponent],

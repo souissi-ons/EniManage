@@ -1,0 +1,29 @@
+<div class="container mx-auto">
+  <img
+    src="assets/bg.png"
+    alt="background image"
+    class="w-full h-16 object-cover mb-6"
+  />
+  <div class="px-4 text-2xl font-bold text-gray-800">Events</div>
+</div>
+
+<div class="bg-white py-4 md:py-7 px-4 md:px-8 xl:px-10">
+  <div class="flex justify-end">
+    <button
+      (click)="handleRequestEvent()"
+      class="focus:ring-2 focus:ring-offset-2 focus:ring-teal-dark mt-4 sm:mt-0 inline-flex items-start justify-start px-6 py-3 bg-teal-light hover:bg-teal-dark focus:outline-none rounded"
+    >
+      <p class="text-sm font-medium leading-none text-white">Request Event</p>
+    </button>
+  </div>
+  <div
+    class="p-6 px-0 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 justify-items-center mt-auto"
+  >
+    <app-event-card
+      *ngFor="let event of events"
+      [event]="event"
+      (viewDetails)="handleViewDetails($event)"
+      class="w-64 rounded-lg shadow-md bg-white overflow-hidden"
+    ></app-event-card>
+  </div>
+</div>

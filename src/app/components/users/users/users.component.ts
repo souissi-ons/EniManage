@@ -4,8 +4,8 @@ import { Users } from 'src/app/models/users';
 import { UsersService } from 'src/app/services/users.service';
 import { PopupComponent } from '../../common/popup/popup.component';
 import { AddUserComponent } from '../add-user/add-user.component';
-import { UpdateUserComponent } from '../update-user/update-user.component';
 import { ConfirmationDialogComponent } from '../../common/confirmation-dialog/confirmation-dialog.component';
+import { UpdateUserComponent } from '../update-user/update-user.component';
 
 @Component({
   selector: 'app-users',
