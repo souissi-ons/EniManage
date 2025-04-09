@@ -11,9 +11,11 @@ import { AddUserComponent } from './components/User/add-user/add-user.component'
 import { UpdateUserComponent } from './components/User/update-user/update-user.component';
 import { ConfirmationDialogComponent } from './components/common/confirmation-dialog/confirmation-dialog.component';
 import { HttpClientModule } from '@angular/common/http';
+import { EventCardComponent } from './components/event-card/event-card.component';
+import { EventsComponent } from './components/events/events.component';
 
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [AppComponent, EventCardComponent, EventsComponent],
   imports: [
     BrowserModule,
     HttpClientModule,

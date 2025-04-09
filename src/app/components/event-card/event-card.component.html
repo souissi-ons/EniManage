@@ -1,0 +1,18 @@
+<div class="w-auto rounded-lg bg-white overflow-hidden flex flex-col h-96">
+  <img
+    class="rounded-t-lg w-auto h-32 object-cover mx-auto"
+    [src]="event.imageUrl"
+    alt="Event Image"
+  />
+  <div class="p-4 flex flex-col flex-grow">
+    <div class="text-sm text-gray-600">Event #{{ event.id }}</div>
+    <div class="p-4 text-lg font-semibold text-gray-800">{{ event.title }}</div>
+    <div class="text-sm text-gray-600 mb-4 space-y-2">
+      {{ event.description }}
+    </div>
+    <button
+      class="w-20 text-center mt-auto p-4 bg-white text-[#4FD1C5] border border-[#4FD1C5] py-2 rounded-xl font-medium hover:bg-[#4FD1C5] hover:text-white transition-colors" (click)="handleAttendEvent(event.id)">
+      Attend
+    </button>
+  </div>
+</div>
