@@ -1,0 +1,202 @@
+<div class="p-8 rounded border border-gray-200">
+  <form [formGroup]="addSalleForm" (ngSubmit)="onSubmit()">
+    <div class="mt-8 grid lg:grid-cols-2 gap-4">
+      <div>
+        <label for="name" class="text-md text-gray-700 block mb-1 font-bold"
+          >Name</label
+        >
+        <div class="mt-1">
+          <input
+            type="text"
+            name="name"
+            id="name"
+            formControlName="name"
+            class="bg-gray-100 border border-gray-200 rounded py-1 px-3 block focus:ring-teal-light focus:border-teal-light text-gray-700 w-full"
+            placeholder="Enter salle name"
+          />
+
+          <div
+            *ngIf="
+              addSalleForm.get('name')?.invalid &&
+              (addSalleForm.get('name')?.dirty ||
+                addSalleForm.get('name')?.touched)
+            "
+            class="mt-1 text-sm text-red-600"
+          >
+            <div *ngIf="addSalleForm.get('name')?.hasError('required')">
+              Name is required.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <label for="quantity" class="text-md text-gray-700 block mb-1 font-bold"
+          >Capacity</label
+        >
+        <div class="mt-1">
+          <input
+            type="number"
+            name="capacity"
+            id="capacity"
+            formControlName="capacity"
+            class="bg-gray-100 border border-gray-200 rounded py-1 px-3 block focus:ring-teal-light focus:border-teal-light text-gray-700 w-full"
+            placeholder="0"
+          />
+          <div
+            *ngIf="
+              addSalleForm.get('capacity')?.invalid &&
+              (addSalleForm.get('capacity')?.dirty ||
+                addSalleForm.get('capacity')?.touched)
+            "
+            class="mt-1 text-sm text-red-600"
+          >
+            <div *ngIf="addSalleForm.get('capacity')?.hasError('required')">
+              Capacity is required.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <label
+        for="description"
+        class="text-md text-gray-700 block mb-1 font-bold"
+        >Description</label
+      >
+      <div class="mt-1">
+        <textarea
+          type="text"
+          name="description"
+          id="description"
+          formControlName="description"
+          class="bg-gray-100 border border-gray-200 rounded py-1 px-3 block focus:ring-teal-light focus:border-teal-light text-gray-700 w-full"
+          placeholder="Enter salle description"
+        ></textarea>
+        <div
+          *ngIf="
+            addSalleForm.get('description')?.invalid &&
+            (addSalleForm.get('description')?.dirty ||
+              addSalleForm.get('description')?.touched)
+          "
+          class="mt-1 text-sm text-red-600"
+        >
+          <div *ngIf="addSalleForm.get('description')?.hasError('required')">
+            Description is required.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="lg:col-span-2">
+      <label class="text-md text-gray-700 block mb-3 font-bold">Batiment</label>
+      <div class="flex flex-wrap gap-3 lg:gap-16">
+        <label class="inline-flex items-center">
+          <input
+            type="radio"
+            name="batiment"
+            value="Principal"
+            class="h-5 w-5 text-teal-600 focus:ring-teal-500 border-gray-300"
+            formControlName="batiment"
+            checked
+          />
+          <span class="ml-2 text-gray-700">Principal</span>
+        </label>
+        <label class="inline-flex items-center">
+          <input
+            type="radio"
+            name="batiment"
+            value="Annexe"
+            formControlName="batiment"
+            class="h-5 w-5 text-teal-600 focus:ring-teal-500 border-gray-300"
+          />
+          <span class="ml-2 text-gray-700">Annexe</span>
+        </label>
+      </div>
+      <div
+        *ngIf="
+          addSalleForm.get('batiment')?.invalid &&
+          (addSalleForm.get('batiment')?.dirty ||
+            addSalleForm.get('batiment')?.touched)
+        "
+        class="mt-1 text-sm text-red-600"
+      >
+        <div>
+          <div *ngIf="addSalleForm.get('batiment')?.hasError('required')">
+            Batiment is required.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="mt-8">
+      <label class="text-md text-gray-700 block mb-3 font-bold"
+        >Ressources</label
+      >
+      <div formArrayName="ressources">
+        <div *ngIf="resourcesArray.length === 0" class="flex justify-start">
+          <button type="button" (click)="addResource()" class="text-teal-dark">
+            <i class="fa fa-plus"></i> Ajouter une ressource
+          </button>
+        </div>
+        <div
+          *ngFor="let resource of resourcesArray.controls; let i = index"
+          [formGroupName]="i"
+          class="flex items-center gap-4"
+        >
+          <div class="flex-1">
+            <select
+              formControlName="resourceName"
+              class="bg-gray-100 border border-gray-200 rounded py-1 px-3 w-full m-3"
+            >
+              <option value="" disabled selected>Select a resource</option>
+              <option *ngFor="let res of resources" [value]="res.id">
+                {{ res.name }}
+              </option>
+            </select>
+          </div>
+
+          <div class="flex-1">
+            <input
+              type="number"
+              name="quantity"
+              id="quantity"
+              formControlName="quantity"
+              class="bg-gray-100 border border-gray-200 rounded py-1 px-3 block focus:ring-teal-light focus:border-teal-light text-gray-700 w-full"
+              placeholder="0"
+            />
+          </div>
+
+          <div class="flex space-x-2">
+            <button
+              type="button"
+              (click)="removeResource(i)"
+              class="text-red-600"
+            >
+              <i class="fa fa-minus"></i>
+            </button>
+            <button type="button" (click)="addResource()" class="text-teal-600">
+              <i class="fa fa-plus"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="space-x-4 mt-8">
+      <button
+        type="submit"
+        class="py-2 px-4 bg-teal-light text-white rounded hover:bg-teal-dark active:bg-teal-light disabled:opacity-50"
+        [class.bg-teal]="!addSalleForm.invalid"
+        [class.hover:bg-teal-light]="!addSalleForm.invalid"
+        [class.focus:ring-teal-light]="!addSalleForm.invalid"
+        [class.bg-teal-dark]="addSalleForm.invalid"
+        [class.cursor-not-allowed]="addSalleForm.invalid"
+        [disabled]="addSalleForm.invalid"
+      >
+        Save
+      </button>
+    </div>
+  </form>
+</div>

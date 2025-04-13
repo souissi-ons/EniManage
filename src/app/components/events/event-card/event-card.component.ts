@@ -1,6 +1,6 @@
 import { DatePipe } from '@angular/common';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { Event } from '../../../models/users';
+import { Event } from '../../../models/event';
 
 @Component({
   selector: 'app-event-card',

@@ -1,12 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { Validators } from '@angular/forms';
-import {
-  FormControl,
-  FormGroup,
-  ReactiveFormsModule,
-  FormBuilder,
-} from '@angular/forms';
+import { ReactiveFormsModule, FormBuilder } from '@angular/forms';
 
 @Component({
   selector: 'app-login',

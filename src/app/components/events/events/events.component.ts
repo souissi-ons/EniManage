@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Event } from '../../../models/users';
+import { Event } from '../../../models/event';
 import { EventsService } from '../../../services/events.service';
 import { CommonModule } from '@angular/common';
 import { EventCardComponent } from '../event-card/event-card.component';

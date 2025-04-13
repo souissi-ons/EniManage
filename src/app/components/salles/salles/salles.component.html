@@ -4,15 +4,15 @@
     alt="background image"
     class="w-full h-16 object-cover mb-6"
   />
-  <div class="px-4 text-2xl font-bold text-gray-800">Users</div>
+  <div class="px-4 text-2xl font-bold text-gray-800">Salles</div>
 </div>
 <div class="bg-white py-4 md:py-7 px-4 md:px-8 xl:px-10">
   <div class="flex justify-end">
     <button
-      (click)="openAddUserPopup()"
+      (click)="openAddSallePopup()"
       class="focus:ring-2 focus:ring-offset-2 focus:ring-teal-dark mt-4 sm:mt-0 inline-flex items-start justify-start px-6 py-3 bg-teal-light hover:bg-teal-dark focus:outline-none rounded"
     >
-      <p class="text-sm font-medium leading-none text-white">Add User</p>
+      <p class="text-sm font-medium leading-none text-white">Add Salle</p>
     </button>
   </div>
   <div class="p-6 px-0">
@@ -27,22 +27,17 @@
           <th
             class="cursor-pointer border-y border-blue-gray-100 bg-blue-gray-50/50 p-4 transition-colors hover:bg-blue-gray-50"
           >
-            Email
+            description
           </th>
           <th
             class="cursor-pointer border-y border-blue-gray-100 bg-blue-gray-50/50 p-4 transition-colors hover:bg-blue-gray-50"
           >
-            Phone Number
+            Batiment
           </th>
           <th
             class="cursor-pointer border-y border-blue-gray-100 bg-blue-gray-50/50 p-4 transition-colors hover:bg-blue-gray-50"
           >
-            Birth Date
-          </th>
-          <th
-            class="cursor-pointer border-y border-blue-gray-100 bg-blue-gray-50/50 p-4 transition-colors hover:bg-blue-gray-50"
-          >
-            Role
+            capacity
           </th>
           <th
             class="cursor-pointer border-y border-blue-gray-100 bg-blue-gray-50/50 p-4 transition-colors hover:bg-blue-gray-50"
@@ -52,27 +47,25 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let user of users">
+        <tr *ngFor="let salle of salles">
           <td class="p-4 border-b border-blue-gray-50">
-            {{ user.name }}
+            {{ salle.name }}
           </td>
           <td class="p-4 border-b border-blue-gray-50">
-            {{ user.email }}
+            {{ salle.description }}
           </td>
           <td class="p-4 border-b border-blue-gray-50">
-            {{ user.phoneNumber }}
+            {{ salle.batiment }}
           </td>
           <td class="p-4 border-b border-blue-gray-50">
-            {{ user.birthDate | date : "dd/MM/yyyy" }}
+            {{ salle.capacity }}
           </td>
-          <td class="p-4 border-b border-blue-gray-50">
-            {{ user.role }}
-          </td>
+
           <td class="p-4 border-b border-blue-gray-50">
             <button
               class="relative align-middle select-none font-sans font-medium text-center uppercase transition-all disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none w-20 h-20 rounded-lg text-xs text-blue-gray-500 hover:bg-blue-gray-500/10 active:bg-blue-gray-500/30"
               type="button"
-              (click)="openEditUserPopup(user)"
+              (click)="openEditSallePopup(salle)"
             >
               <span
                 class="absolute top-1/2 left-1/2 transform -translate-y-1/2 -translate-x-1/2"
@@ -83,7 +76,7 @@
             <button
               class="relative align-middle select-none font-sans font-medium text-center uppercase transition-all disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none w-20 h-20 rounded-lg text-xs text-blue-gray-500 hover:bg-blue-gray-500/10 active:bg-blue-gray-500/30"
               type="button"
-              (click)="openDeleteUserPopup(user)"
+              (click)="openDeleteSallePopup(salle)"
             >
               <span
                 class="absolute top-1/2 left-1/2 transform -translate-y-1/2 -translate-x-1/2"
@@ -97,25 +90,25 @@
     </table>
   </div>
   <app-popup
-    [title]="'Add User'"
-    [show]="showAddUserPopup"
-    (close)="closeAddUserPopup()"
+    [title]="'Add Salle'"
+    [show]="showAddSallePopup"
+    (close)="closeAddSallePopup()"
   >
-    <app-add-user></app-add-user>
+    <app-add-salle></app-add-salle>
   </app-popup>
 
   <app-popup
-    [title]="'Edit User'"
-    [show]="showEditUserPopup"
-    (close)="closeEditUserPopup()"
+    [title]="'Edit Salle'"
+    [show]="showEditSallePopup"
+    (close)="closeEditSallePopup()"
   >
-    <app-update-user [userData]="selectedUser"></app-update-user>
+    <app-edit-salle [salleData]="selectedSalle"></app-edit-salle>
   </app-popup>
 
   <app-popup
-    [title]="'Delete User'"
-    [show]="showDeleteUserPopup"
-    (close)="closeDeleteUserPopup()"
+    [title]="'Delete Salle'"
+    [show]="showDeleteSallePopup"
+    (close)="closeDeleteSallePopup()"
   >
     <app-confirmation-dialog
       [selectedName]="selectedName"

@@ -105,9 +105,18 @@ export class UpdateUserComponent implements OnChanges {
             );
           }
           this.successMessage = 'User updated successfully';
+          this.errorMessage = '';
+
+          setTimeout(() => {
+            this.successMessage = '';
+          }, 5000);
         },
         error: (error) => {
           this.errorMessage = 'Error updating user';
+          this.successMessage = '';
+          setTimeout(() => {
+            this.errorMessage = '';
+          }, 5000);
         },
       });
     }
