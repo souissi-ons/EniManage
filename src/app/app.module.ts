@@ -22,9 +22,24 @@ import { ErrorInterceptor } from './interceptors/error.interceptor';
 import { AuthInterceptor } from './interceptors/auth.interceptor';
 import { APP_INITIALIZER } from '@angular/core';
 import { AuthService } from './services/auth.service';
+import { firstValueFrom } from 'rxjs';
 
-export function initializeAuth(authService: AuthService) {
-  return () => authService.validateToken().toPromise();
+// Optional: Factory function for APP_INITIALIZER if you need auth on startup
+function initializeApp(authService: AuthService) {
+  return () => {
+    // Return a promise that resolves when auth is ready
+    return new Promise<void>((resolve) => {
+      const token = localStorage.getItem('token');
+      if (token) {
+        authService.fetchCurrentUser().subscribe({
+          next: () => resolve(),
+          error: () => resolve(),
+        });
+      } else {
+        resolve();
+      }
+    });
+  };
 }
 
 @NgModule({
@@ -50,23 +65,16 @@ export function initializeAuth(authService: AuthService) {
     EditSalleComponent,
   ],
   providers: [
+    // Provide JWT interceptor first, then error interceptor
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
+    // Optional: Initialize auth on app startup
     {
       provide: APP_INITIALIZER,
-      useFactory: initializeAuth,
+      useFactory: initializeApp,
       deps: [AuthService],
-      multi: true
+      multi: true,
     },
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: AuthInterceptor,
-      multi: true
-    },
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: ErrorInterceptor,
-      multi: true
-    },
-   
   ],
   bootstrap: [AppComponent],
 })

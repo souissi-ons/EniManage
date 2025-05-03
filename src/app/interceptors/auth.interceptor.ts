@@ -4,37 +4,28 @@ import {
   HttpHandler,
   HttpEvent,
   HttpInterceptor,
-  HttpErrorResponse
 } from '@angular/common/http';
-import { Observable, throwError } from 'rxjs';
-import { catchError, tap } from 'rxjs/operators';
-import { AuthService } from '../services/auth.service';
+import { Observable } from 'rxjs';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
-  constructor(private authService: AuthService) {}
+  constructor() {}
 
- intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
-  const token = this.authService.getToken();
-  
-  if (token && !request.url.includes('/api/auth/')) {
-    request = request.clone({
-      setHeaders: {
-        Authorization: `Bearer ${token}`
-      }
-    });
+  intercept(
+    request: HttpRequest<unknown>,
+    next: HttpHandler
+  ): Observable<HttpEvent<unknown>> {
+    // Get token directly from localStorage instead of AuthService
+    const token = localStorage.getItem('token');
+
+    if (token) {
+      request = request.clone({
+        setHeaders: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+    }
+
+    return next.handle(request);
   }
-
-  return next.handle(request).pipe(
-    catchError((error: HttpErrorResponse) => {
-      if (error.status === 401 || error.status === 403) {
-        // Ne déconnecter que si c'est une erreur d'authentification
-        if (!request.url.includes('/api/auth/')) {
-          this.authService.logout();
-        }
-      }
-      return throwError(() => error);
-    })
-  );
 }
-} 

@@ -9,24 +9,17 @@ import { AuthGuard } from './guards/auth.guard';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
-    { path: 'login', component: LoginComponent },
-  { path: 'users', component: UsersComponent },
-  { path: 'resources', component: ResourcesComponent },
-  { path: 'rooms', component: SallesComponent },
-  { path: 'events', component: EventsComponent },
-  { path: '', redirectTo: '/events', pathMatch: 'full' },
-  { path: '**', redirectTo: '/events' }
-  // {
-  //   path: '',
-  //   canActivate: [AuthGuard],
-  //   children: [
-  //     { path: 'users', component: UsersComponent },
-  //     { path: 'resources', component: ResourcesComponent },
-  //     { path: 'salles', component: SallesComponent },
-  //     { path: 'events', component: EventsComponent },
-  //     { path: '', redirectTo: '/events', pathMatch: 'full' }
-  //   ]
-  // }
+  {
+    path: '',
+    canActivate: [AuthGuard],
+    children: [
+      { path: 'users', component: UsersComponent },
+      { path: 'resources', component: ResourcesComponent },
+      { path: 'rooms', component: SallesComponent },
+      { path: 'events', component: EventsComponent },
+      { path: '', redirectTo: '/users', pathMatch: 'full' },
+    ],
+  },
 ];
 
 @NgModule({

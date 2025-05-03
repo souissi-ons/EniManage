@@ -10,12 +10,9 @@ import { AuthService } from './services/auth.service';
 export class AppComponent {
   title = 'gestion_events';
 
-   constructor(private router: Router, private authService: AuthService) {}
+  constructor(private router: Router, private authService: AuthService) {}
 
-  ngOnInit() {
-    // Vérification à chaque initialisation du composant racine
-    this.authService.validateToken().subscribe();
-  }
+  ngOnInit() {}
 
   isLoginPage(): boolean {
     const url = this.router.url;
