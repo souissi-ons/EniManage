@@ -5,14 +5,28 @@ import { LoginComponent } from './components/login/login.component';
 import { EventsComponent } from './components/events/events/events.component';
 import { ResourcesComponent } from './components/resources/resources/resources.component';
 import { SallesComponent } from './components/salles/salles/salles.component';
+import { AuthGuard } from './guards/auth.guard';
 
 const routes: Routes = [
-  { path: '', pathMatch: 'full', redirectTo: 'login' },
-  { path: 'users', pathMatch: 'full', component: UsersComponent },
-  { path: 'login', pathMatch: 'full', component: LoginComponent },
-  { path: 'events', pathMatch: 'full', component: EventsComponent },
-  { path: 'resources', pathMatch: 'full', component: ResourcesComponent },
-  { path: 'rooms', pathMatch: 'full', component: SallesComponent },
+  { path: 'login', component: LoginComponent },
+    { path: 'login', component: LoginComponent },
+  { path: 'users', component: UsersComponent },
+  { path: 'resources', component: ResourcesComponent },
+  { path: 'rooms', component: SallesComponent },
+  { path: 'events', component: EventsComponent },
+  { path: '', redirectTo: '/events', pathMatch: 'full' },
+  { path: '**', redirectTo: '/events' }
+  // {
+  //   path: '',
+  //   canActivate: [AuthGuard],
+  //   children: [
+  //     { path: 'users', component: UsersComponent },
+  //     { path: 'resources', component: ResourcesComponent },
+  //     { path: 'salles', component: SallesComponent },
+  //     { path: 'events', component: EventsComponent },
+  //     { path: '', redirectTo: '/events', pathMatch: 'full' }
+  //   ]
+  // }
 ];
 
 @NgModule({

@@ -108,6 +108,10 @@
             Sign in
           </button>
         </div>
+
+        <div *ngIf="errorMessage" class="mt-2 text-center text-sm text-red-600">
+          {{ errorMessage }}
+        </div>
       </form>
     </div>
   </div>

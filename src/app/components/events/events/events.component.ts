@@ -3,6 +3,8 @@ import { Event } from '../../../models/event';
 import { EventsService } from '../../../services/events.service';
 import { CommonModule } from '@angular/common';
 import { EventCardComponent } from '../event-card/event-card.component';
+import { AuthService } from '../../../services/auth.service';
+
 @Component({
   selector: 'app-events',
   templateUrl: './events.component.html',
@@ -12,17 +14,42 @@ import { EventCardComponent } from '../event-card/event-card.component';
 })
 export class EventsComponent implements OnInit {
   events: Event[] = [];
-  constructor(private eventsService: EventsService) {}
+  loading = true;
+  error: string | null = null;
+
+  constructor(
+    private eventsService: EventsService,
+    private authService: AuthService
+  ) {}
 
   ngOnInit(): void {
-    this.eventsService.getEvents().subscribe((events) => {
-      this.events = events;
+    console.log('EventsComponent: Initializing...');
+    this.loadEvents();
+  }
+
+  loadEvents(): void {
+    console.log('EventsComponent: Loading events...');
+    this.loading = true;
+    this.error = null;
+
+    this.eventsService.getEvents().subscribe({
+      next: (data) => {
+        console.log('EventsComponent: Events loaded successfully:', data);
+        this.events = data;
+        this.loading = false;
+      },
+      error: (error) => {
+        console.error('EventsComponent: Error loading events:', error);
+        this.error = 'Une erreur est survenue lors du chargement des événements.';
+        this.loading = false;
+      }
     });
   }
 
   handleViewDetails(eventId: number) {
     console.log('View details for event ID:', eventId);
   }
+
   handleRequestEvent() {
     console.log('Request event clicked');
   }
