@@ -25,6 +25,8 @@ import { AuthService } from './services/auth.service';
 import { firstValueFrom } from 'rxjs';
 import { ChatComponent } from './components/chat/chat/chat.component';
 import { CorsInterceptor } from './interceptors/cors.interceptor';
+import { ProfileComponent } from './components/users/profile/profile.component';
+import { ClubMembersComponent } from './components/users/club-members/club-members.component';
 
 function initializeApp(authService: AuthService) {
   return () => {
@@ -65,6 +67,8 @@ function initializeApp(authService: AuthService) {
     AddSalleComponent,
     EditSalleComponent,
     ChatComponent,
+    ProfileComponent,
+    ClubMembersComponent,
   ],
   providers: [
     {

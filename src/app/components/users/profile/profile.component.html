@@ -1,0 +1,345 @@
+<!-- profile.component.html -->
+<div class="container mx-auto">
+  <img
+    src="assets/bg.png"
+    alt="background image"
+    class="w-full h-16 object-cover mb-6"
+  />
+  <div class="px-4 text-2xl font-bold text-gray-800">My Profile</div>
+</div>
+
+<div class="bg-white py-4 md:py-7 px-4 md:px-8 xl:px-10">
+  <div *ngIf="isLoading" class="text-center py-8">
+    <div
+      class="inline-block animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-teal-dark"
+    ></div>
+  </div>
+
+  <div *ngIf="!isLoading" class="grid grid-cols-1 md:grid-cols-2 gap-8">
+    <!-- Profile Section -->
+    <div class="bg-blue-gray-50/50 p-6 rounded-lg">
+      <h2 class="text-xl font-semibold mb-4 text-gray-800">
+        Profile Information
+      </h2>
+
+      <form [formGroup]="profileForm" (ngSubmit)="updateProfile()">
+        <!-- Profile Image Upload - Only visible for CLUB role -->
+        <div class="mb-4" *ngIf="user?.role === 'CLUB'">
+          <label
+            class="block text-gray-700 text-sm font-bold mb-2"
+            for="profileImage"
+          >
+            Club Logo
+          </label>
+          <div class="flex items-center space-x-4 mb-2">
+            <!-- Image Preview -->
+            <div *ngIf="imagePreview" class="flex-shrink-0">
+              <img
+                [src]="imagePreview"
+                alt="Club logo preview"
+                class="h-24 w-24 object-cover rounded-full border-2 border-teal-light"
+              />
+            </div>
+            <div *ngIf="!imagePreview" class="flex-shrink-0">
+              <div
+                class="h-24 w-24 rounded-full bg-gray-200 flex items-center justify-center"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-12 w-12 text-gray-400"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+                  />
+                </svg>
+              </div>
+            </div>
+
+            <!-- File Input -->
+            <div class="flex-grow">
+              <input
+                id="profileImage"
+                type="file"
+                accept="image/*"
+                (change)="onImageSelected($event)"
+                class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-sm file:font-semibold file:bg-teal-light file:text-white hover:file:bg-teal-dark"
+              />
+              <p class="mt-1 text-xs text-gray-500">
+                PNG, JPG, or GIF up to 5MB
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="mb-4">
+          <label class="block text-gray-700 text-sm font-bold mb-2" for="name"
+            >Name</label
+          >
+          <input
+            id="name"
+            type="text"
+            formControlName="name"
+            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          />
+          <div
+            *ngIf="
+              profileForm.get('name')?.invalid &&
+              profileForm.get('name')?.touched
+            "
+            class="text-red-500 text-xs mt-1"
+          >
+            Name is required
+          </div>
+        </div>
+
+        <div class="mb-4">
+          <label class="block text-gray-700 text-sm font-bold mb-2" for="email"
+            >Email</label
+          >
+          <input
+            id="email"
+            type="email"
+            formControlName="email"
+            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          />
+          <div
+            *ngIf="
+              profileForm.get('email')?.invalid &&
+              profileForm.get('email')?.touched
+            "
+            class="text-red-500 text-xs mt-1"
+          >
+            Valid email is required
+          </div>
+        </div>
+
+        <div class="mb-4">
+          <label
+            class="block text-gray-700 text-sm font-bold mb-2"
+            for="phoneNumber"
+            >Phone Number</label
+          >
+          <input
+            id="phoneNumber"
+            type="tel"
+            formControlName="phoneNumber"
+            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          />
+          <div
+            *ngIf="
+              profileForm.get('phoneNumber')?.invalid &&
+              profileForm.get('phoneNumber')?.touched
+            "
+            class="text-red-500 text-xs mt-1"
+          >
+            Phone number is required
+          </div>
+        </div>
+
+        <div class="mb-4">
+          <label
+            class="block text-gray-700 text-sm font-bold mb-2"
+            for="birthDate"
+            >Birth Date</label
+          >
+          <input
+            id="birthDate"
+            type="date"
+            formControlName="birthDate"
+            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          />
+          <div
+            *ngIf="
+              profileForm.get('birthDate')?.invalid &&
+              profileForm.get('birthDate')?.touched
+            "
+            class="text-red-500 text-xs mt-1"
+          >
+            Birth date is required
+          </div>
+        </div>
+
+        <div class="mb-4" *ngIf="user?.role === 'CLUB'">
+          <label
+            class="block text-gray-700 text-sm font-bold mb-2"
+            for="description"
+            >Club Description</label
+          >
+          <textarea
+            id="description"
+            formControlName="description"
+            rows="3"
+            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          ></textarea>
+        </div>
+
+        <div class="flex items-center justify-between">
+          <button
+            type="submit"
+            [disabled]="profileForm.invalid || isLoading"
+            class="focus:ring-2 focus:ring-offset-2 focus:ring-teal-dark inline-flex items-start justify-start px-6 py-3 bg-teal-light hover:bg-teal-dark focus:outline-none rounded disabled:opacity-50"
+          >
+            <p class="text-sm font-medium leading-none text-white">
+              <span *ngIf="!isLoading">Update Profile</span>
+              <span *ngIf="isLoading" class="flex items-center">
+                <svg
+                  class="animate-spin -ml-1 mr-2 h-4 w-4 text-white"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                >
+                  <circle
+                    class="opacity-25"
+                    cx="12"
+                    cy="12"
+                    r="10"
+                    stroke="currentColor"
+                    stroke-width="4"
+                  ></circle>
+                  <path
+                    class="opacity-75"
+                    fill="currentColor"
+                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                  ></path>
+                </svg>
+                Processing...
+              </span>
+            </p>
+          </button>
+
+          <div>
+            <div *ngIf="profileSuccess" class="text-green-600 text-sm">
+              Profile updated successfully!
+            </div>
+            <div *ngIf="profileError" class="text-red-500 text-sm">
+              {{ profileError }}
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <!-- Password Section -->
+    <div class="bg-blue-gray-50/50 p-6 rounded-lg">
+      <h2 class="text-xl font-semibold mb-4 text-gray-800">Change Password</h2>
+
+      <form [formGroup]="passwordForm" (ngSubmit)="updatePassword()">
+        <div class="mb-4">
+          <label
+            class="block text-gray-700 text-sm font-bold mb-2"
+            for="currentPassword"
+            >Current Password</label
+          >
+          <input
+            id="currentPassword"
+            type="password"
+            formControlName="currentPassword"
+            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          />
+          <div
+            *ngIf="
+              passwordForm.get('currentPassword')?.invalid &&
+              passwordForm.get('currentPassword')?.touched
+            "
+            class="text-red-500 text-xs mt-1"
+          >
+            Current password is required
+          </div>
+        </div>
+
+        <div class="mb-4">
+          <label
+            class="block text-gray-700 text-sm font-bold mb-2"
+            for="newPassword"
+            >New Password</label
+          >
+          <input
+            id="newPassword"
+            type="password"
+            formControlName="newPassword"
+            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          />
+          <div
+            *ngIf="
+              passwordForm.get('newPassword')?.invalid &&
+              passwordForm.get('newPassword')?.touched
+            "
+            class="text-red-500 text-xs mt-1"
+          >
+            Password must be at least 8 characters
+          </div>
+        </div>
+
+        <div class="mb-4">
+          <label
+            class="block text-gray-700 text-sm font-bold mb-2"
+            for="confirmPassword"
+            >Confirm Password</label
+          >
+          <input
+            id="confirmPassword"
+            type="password"
+            formControlName="confirmPassword"
+            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          />
+          <div
+            *ngIf="passwordForm.get('confirmPassword')?.errors?.['passwordMismatch']"
+            class="text-red-500 text-xs mt-1"
+          >
+            Passwords do not match
+          </div>
+        </div>
+
+        <div class="flex items-center justify-between">
+          <button
+            type="submit"
+            [disabled]="passwordForm.invalid || isPasswordLoading"
+            class="focus:ring-2 focus:ring-offset-2 focus:ring-teal-dark inline-flex items-start justify-start px-6 py-3 bg-teal-light hover:bg-teal-dark focus:outline-none rounded disabled:opacity-50"
+          >
+            <p class="text-sm font-medium leading-none text-white">
+              <span *ngIf="!isPasswordLoading">Change Password</span>
+              <span *ngIf="isPasswordLoading" class="flex items-center">
+                <svg
+                  class="animate-spin -ml-1 mr-2 h-4 w-4 text-white"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                >
+                  <circle
+                    class="opacity-25"
+                    cx="12"
+                    cy="12"
+                    r="10"
+                    stroke="currentColor"
+                    stroke-width="4"
+                  ></circle>
+                  <path
+                    class="opacity-75"
+                    fill="currentColor"
+                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                  ></path>
+                </svg>
+                Processing...
+              </span>
+            </p>
+          </button>
+
+          <div>
+            <div *ngIf="passwordSuccess" class="text-green-600 text-sm">
+              Password changed successfully!
+            </div>
+            <div *ngIf="passwordError" class="text-red-500 text-sm">
+              {{ passwordError }}
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

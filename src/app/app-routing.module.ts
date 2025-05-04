@@ -7,6 +7,8 @@ import { ResourcesComponent } from './components/resources/resources/resources.c
 import { SallesComponent } from './components/salles/salles/salles.component';
 import { AuthGuard } from './guards/auth.guard';
 import { ChatComponent } from './components/chat/chat/chat.component';
+import { ProfileComponent } from './components/users/profile/profile.component';
+import { ClubMembersComponent } from './components/users/club-members/club-members.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -19,6 +21,8 @@ const routes: Routes = [
       { path: 'rooms', component: SallesComponent },
       { path: 'events', component: EventsComponent },
       { path: 'chat', component: ChatComponent },
+      { path: 'profile', component: ProfileComponent },
+      { path: 'membership', component: ClubMembersComponent },
       { path: '', redirectTo: '/users', pathMatch: 'full' },
     ],
   },
