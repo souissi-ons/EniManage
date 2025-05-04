@@ -23,6 +23,8 @@ import { AuthInterceptor } from './interceptors/auth.interceptor';
 import { APP_INITIALIZER } from '@angular/core';
 import { AuthService } from './services/auth.service';
 import { firstValueFrom } from 'rxjs';
+import { ChatComponent } from './components/chat/chat/chat.component';
+import { CorsInterceptor } from './interceptors/cors.interceptor';
 
 // Optional: Factory function for APP_INITIALIZER if you need auth on startup
 function initializeApp(authService: AuthService) {
@@ -63,12 +65,25 @@ function initializeApp(authService: AuthService) {
     SallesComponent,
     AddSalleComponent,
     EditSalleComponent,
+    ChatComponent,
   ],
   providers: [
-    // Provide JWT interceptor first, then error interceptor
-    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
-    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
-    // Optional: Initialize auth on app startup
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: CorsInterceptor,
+      multi: true,
+    },
+
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true,
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: ErrorInterceptor,
+      multi: true,
+    },
     {
       provide: APP_INITIALIZER,
       useFactory: initializeApp,
