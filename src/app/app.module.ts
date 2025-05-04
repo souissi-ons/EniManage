@@ -22,10 +22,9 @@ import { ErrorInterceptor } from './interceptors/error.interceptor';
 import { AuthInterceptor } from './interceptors/auth.interceptor';
 import { APP_INITIALIZER } from '@angular/core';
 import { AuthService } from './services/auth.service';
-import { firstValueFrom } from 'rxjs';
 import { ReactiveFormsModule } from '@angular/forms';
-import { AddEventComponent } from './components/events/add-event/add-event.component';
-
+import { AdminEventCardComponent } from './components/events/admin-event-card/admin-event-card.component';
+import { AdminEventManagementComponent } from './components/events/admin-event-management/admin-event-management.component';
 // Optional: Factory function for APP_INITIALIZER if you need auth on startup
 function initializeApp(authService: AuthService) {
   return () => {
@@ -45,7 +44,7 @@ function initializeApp(authService: AuthService) {
 }
 
 @NgModule({
-  declarations: [AppComponent,AddEventComponent],
+  declarations: [AppComponent],
   imports: [
     BrowserModule,
     HttpClientModule,
@@ -66,6 +65,9 @@ function initializeApp(authService: AuthService) {
     AddSalleComponent,
     EditSalleComponent,
     ReactiveFormsModule,
+    AdminEventCardComponent,
+    AdminEventManagementComponent
+
     
   ],
   providers: [
