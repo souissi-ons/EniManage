@@ -26,7 +26,6 @@ import { firstValueFrom } from 'rxjs';
 import { ChatComponent } from './components/chat/chat/chat.component';
 import { CorsInterceptor } from './interceptors/cors.interceptor';
 
-// Optional: Factory function for APP_INITIALIZER if you need auth on startup
 function initializeApp(authService: AuthService) {
   return () => {
     // Return a promise that resolves when auth is ready
