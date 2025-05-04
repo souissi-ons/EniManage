@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { Observable, throwError, BehaviorSubject } from 'rxjs';
 import { catchError, tap, map } from 'rxjs/operators';
@@ -15,6 +15,13 @@ export class AuthService {
 
   constructor(private http: HttpClient, private router: Router) {
     this.initializeAuth();
+  }
+
+  private getHeaders(): HttpHeaders {
+    const token = this.getToken();
+    return new HttpHeaders({
+      'Authorization': `Bearer ${token}`
+    });
   }
 
   private initializeAuth(): void {
@@ -36,7 +43,7 @@ export class AuthService {
 
   fetchCurrentUser(): Observable<any> {
     console.log('AuthService: Fetching current user...');
-    return this.http.get(`${this.apiUrl}/me`).pipe(
+    return this.http.get(`${this.apiUrl}/me`, { headers: this.getHeaders() }).pipe(
       tap((user) => {
         this.currentUserSubject.next(user);
       }),
@@ -73,7 +80,7 @@ export class AuthService {
 
   private validateToken(token: string): Observable<boolean> {
     return this.http
-      .post<{ valid: boolean }>(`${this.apiUrl}/validate-token`, { token })
+      .post<{ valid: boolean }>(`${this.apiUrl}/validate-token`, { token }, { headers: this.getHeaders() })
       .pipe(
         map((response) => response.valid),
         catchError((error) => {
