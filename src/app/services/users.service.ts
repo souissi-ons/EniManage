@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { catchError, Observable, of, tap, throwError } from 'rxjs';
 import { Users } from '../models/users';
 
 @Injectable({
@@ -19,7 +19,16 @@ export class UsersService {
   }
 
   updateUser(userId: number, user: any): Observable<any> {
-    return this.http.patch<any>(`${this.apiUrl}/${userId}`, user);
+    // Add debug logging
+    console.log('Current token:', localStorage.getItem('token'));
+
+    return this.http.patch<any>(`${this.apiUrl}/${userId}`, user).pipe(
+      tap((response) => console.log('Update successful:', response)),
+      catchError((error) => {
+        console.error('Update error:', error);
+        return throwError(() => error);
+      })
+    );
   }
 
   addUser(user: any): Observable<any> {
