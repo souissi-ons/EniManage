@@ -1,19 +1,66 @@
 <div class="container mx-auto px-4 py-8">
   <h1 class="text-3xl font-bold text-gray-800 mb-6">Event Management</h1>
+ 
   
-  <div class="bg-white rounded-lg shadow-md p-6 mb-8">
-    
-    <div *ngIf="pendingEvents.length === 0" class="text-gray-500 py-4">
-      No pending events to review.
+  
+  <!-- Loading state -->
+  <div *ngIf="loading" class="flex justify-center py-8">
+    <div class="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+  </div>
+  
+  <!-- Error state -->
+  <div *ngIf="error" class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-6">
+    <p>{{ error }}</p>
+    <button class="mt-2 text-sm text-blue-600 hover:underline" (click)="loadEvents()">Try Again</button>
+  </div>
+  
+  <!-- Content based on active tab -->
+  <div *ngIf="!loading && !error" class="bg-white rounded-lg shadow-md p-6 mb-8">
+    <!-- Pending Events -->
+    <div *ngIf="activeTab === 'pending'">
+      <div *ngIf="pendingEvents.length === 0" class="text-gray-500 py-4">
+        No pending events to review.
+      </div>
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <app-admin-event-card 
+          *ngFor="let event of pendingEvents" 
+          [event]="event"
+          (viewDetails)="handleViewDetails($event)"
+          (statusChange)="handleStatusChange($event)">
+        </app-admin-event-card>
+      </div>
     </div>
     
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-      <app-admin-event-card 
-        *ngFor="let event of pendingEvents" 
-        [event]="event"
-        (viewDetails)="handleViewDetails($event)"
-        (statusChange)="handleStatusChange($event)">
-      </app-admin-event-card>
+    <!-- Placeholder for other tabs - replace with actual content when implemented -->
+    <div *ngIf="activeTab === 'accepted'">
+      <div *ngIf="acceptedEvents.length === 0" class="text-gray-500 py-4">
+        No accepted events to display.
+      </div>
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <app-admin-event-card 
+          *ngFor="let event of acceptedEvents" 
+          [event]="event"
+          (viewDetails)="handleViewDetails($event)"
+          (statusChange)="handleStatusChange($event)">
+        </app-admin-event-card>
+      </div>
+    </div>
+    
+    <div *ngIf="activeTab === 'rejected'">
+      <div *ngIf="rejectedEvents.length === 0" class="text-gray-500 py-4">
+        No rejected events to display.
+      </div>
+      
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <app-admin-event-card 
+          *ngFor="let event of rejectedEvents" 
+          [event]="event"
+          (viewDetails)="handleViewDetails($event)"
+          (statusChange)="handleStatusChange($event)">
+        </app-admin-event-card>
+      </div>
     </div>
   </div>
   
@@ -37,6 +84,38 @@
             alt="Event Image"
             (error)="handleImageError($event)"
           />
+          
+          <!-- Status badge -->
+          <div class="mt-3 flex justify-center">
+            <span class="px-3 py-1 text-sm font-semibold rounded-full"
+                  [ngClass]="{
+                    'bg-yellow-100 text-yellow-800': selectedEvent.status === 'PENDING',
+                    'bg-green-100 text-green-800': selectedEvent.status === 'ACCEPTED',
+                    'bg-red-100 text-red-800': selectedEvent.status === 'REJECTED'
+                  }">
+              {{ selectedEvent.status }}
+            </span>
+          </div>
+          
+          <!-- Creator info (if available) -->
+          <div *ngIf="selectedEvent.creator" class="mt-4 p-3 bg-gray-50 rounded-lg">
+            <h4 class="text-sm font-semibold text-gray-700 mb-2">Creator</h4>
+            <div class="text-sm">
+              <p class="mb-1"><span class="font-medium">Name:</span> {{ selectedEvent.creator.name }}</p>
+              <p><span class="font-medium">Email:</span> {{ selectedEvent.creator.email }}</p>
+              <p><span class="font-medium">Phone Number:</span> {{ selectedEvent.creator.phone }}</p>
+
+            </div>
+          </div>
+          
+          <!-- Location info (if available) -->
+          <div *ngIf="selectedEvent.salle" class="mt-3 p-3 bg-gray-50 rounded-lg">
+            <h4 class="text-sm font-semibold text-gray-700 mb-2">Location</h4>
+            <div class="text-sm">
+              <p class="mb-1"><span class="font-medium">Name:</span> {{ selectedEvent.salle.name }}</p>
+              <p *ngIf="selectedEvent.salle.batiment"><span class="font-medium">Building:</span> {{ selectedEvent.salle.batiment }}</p>
+            </div>
+          </div>
         </div>
         
         <div class="md:col-span-2">
@@ -47,51 +126,23 @@
           
           <div class="mb-4">
             <h4 class="text-sm font-semibold text-gray-500">Description</h4>
-            <p>{{ selectedEvent.description }}</p>
+            <p class="whitespace-pre-line">{{ selectedEvent.description }}</p>
           </div>
           
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
             <div>
               <h4 class="text-sm font-semibold text-gray-500">Start Date</h4>
               <p class="mt-1 text-sm text-gray-800">
-                {{ formatDate(selectedEvent.date_start || selectedEvent.startDate) }}
+                {{ formatDate(selectedEvent.date_start || selectedEvent.dateStart) }}
               </p>
             </div>
             
             <div>
               <h4 class="text-sm font-semibold text-gray-500">End Date</h4>
               <p class="mt-1 text-sm text-gray-800">
-                {{ formatDate(selectedEvent.date_end || selectedEvent.endDate) }}
+                {{ formatDate(selectedEvent.date_end || selectedEvent.dateEnd) }}
               </p>
             </div>
           </div>
           
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-            <div>
-              <h4 class="text-sm font-semibold text-gray-500">Capacity</h4>
-              <p>{{ selectedEvent.capacity }} people</p>
-            </div>
-            <div>
-              <h4 class="text-sm font-semibold text-gray-500">Visibility</h4>
-              <p>{{ selectedEvent.is_private ? 'Private' : 'Public' }}</p>
-            </div>
-          </div>
-          
-          <div class="flex space-x-4">
-            <button 
-              (click)="handleStatusChange({eventId: selectedEvent.id, status: 'ACCEPTED'})"
-              class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors">
-              Accept Event
-            </button>
-            
-            <button 
-              (click)="handleStatusChange({eventId: selectedEvent.id, status: 'REJECTED'})"
-              class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors">
-              Reject Event
-            </button>
-          </div>
         </div>
-      </div>
-    </div>
-  </div>
-</div>

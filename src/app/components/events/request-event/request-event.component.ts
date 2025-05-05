@@ -16,7 +16,6 @@ import { Users } from '../../../models/users';
 import { EventsService } from '../../../services/events.service';
 import { ResourceService } from '../../../services/resource.service';
 import { Resource } from '../../../models/resource';
-import { EventResource } from '../../../models/event';
 
 @Component({
   selector: 'app-request-event',

@@ -1,6 +1,5 @@
-// event-card.component.ts
 import { Component, Input, Output, EventEmitter } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Event } from 'src/app/models/event';
 import { EventsService } from 'src/app/services/events.service';
@@ -10,6 +9,7 @@ import { EventsService } from 'src/app/services/events.service';
   templateUrl: './event-card.component.html',
   standalone: true,
   imports: [CommonModule, FormsModule],
+  providers: [DatePipe],
   styleUrls: ['./event-card.component.css']
 })
 export class EventCardComponent {
@@ -18,34 +18,34 @@ export class EventCardComponent {
   @Output() viewDetails = new EventEmitter<number>();
   showFeedbackModal = false;
   feedbackComment = '';
-
+  
   constructor(
-    private eventsService: EventsService
+    private eventsService: EventsService,
+    private datePipe: DatePipe
   ) {}
-
+  
   getImageUrl(): string {
     if (this.event.imageUrl) {
       return this.eventsService.getEventImageUrl(this.event.imageUrl);
     }
-    return 'assets/default-event.png'; 
+    return 'assets/default-event.png';
   }
-
+  
   handleAttendEvent(eventId: number) {
     const userId = 1;
     this.eventsService.attendEvent(eventId, userId).subscribe({
       next: () => {
-        this.event.isParticipating = true;
         this.event.currentParticipants = (this.event.currentParticipants || 0) + 1;
         this.updateNeeded.emit();
       },
       error: (error: Error) => console.error('Erreur participation:', error)
     });
   }
-
+  
   handleGiveFeedback() {
     this.showFeedbackModal = true;
   }
-
+  
   submitFeedback() {
     if (this.feedbackComment.trim()) {
       const userId = 1;
@@ -58,16 +58,34 @@ export class EventCardComponent {
       });
     }
   }
-
+  
   closeFeedbackModal() {
     this.showFeedbackModal = false;
     this.feedbackComment = '';
   }
-
+  
   handleViewDetails() {
     this.viewDetails.emit(this.event.id);
   }
-
+  
+  getEventDate(): string {
+    // Try both property names
+    const startDate = this.event.date_start || this.event.dateStart;
+    
+    if (!startDate) return 'N/A';
+    
+    try {
+      const dateObj = new Date(startDate);
+      if (!isNaN(dateObj.getTime())) {
+        return this.datePipe.transform(dateObj, 'shortDate') || 'N/A';
+      }
+    } catch (error) {
+      console.error('Error formatting event date:', error);
+    }
+    
+    return 'N/A';
+  }
+  
   get eventStatusClass() {
     return {
       'bg-green-100 text-green-800': this.event.status === 'ACCEPTED',
