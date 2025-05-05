@@ -25,7 +25,13 @@ import { AuthService } from './services/auth.service';
 import { ReactiveFormsModule } from '@angular/forms';
 import { AdminEventCardComponent } from './components/events/admin-event-card/admin-event-card.component';
 import { AdminEventManagementComponent } from './components/events/admin-event-management/admin-event-management.component';
-// Optional: Factory function for APP_INITIALIZER if you need auth on startup
+
+import { firstValueFrom } from 'rxjs';
+import { ChatComponent } from './components/chat/chat/chat.component';
+import { CorsInterceptor } from './interceptors/cors.interceptor';
+import { ProfileComponent } from './components/users/profile/profile.component';
+import { ClubMembersComponent } from './components/users/club-members/club-members.component';
+
 function initializeApp(authService: AuthService) {
   return () => {
     // Return a promise that resolves when auth is ready
@@ -67,14 +73,27 @@ function initializeApp(authService: AuthService) {
     ReactiveFormsModule,
     AdminEventCardComponent,
     AdminEventManagementComponent
-
-    
+    ChatComponent,
+    ProfileComponent,
+    ClubMembersComponent,
   ],
   providers: [
-    // Provide JWT interceptor first, then error interceptor
-    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
-    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
-    // Optional: Initialize auth on app startup
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: CorsInterceptor,
+      multi: true,
+    },
+
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true,
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: ErrorInterceptor,
+      multi: true,
+    },
     {
       provide: APP_INITIALIZER,
       useFactory: initializeApp,

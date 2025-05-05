@@ -1,0 +1,80 @@
+<div class="container mx-auto">
+  <img
+    src="assets/bg.png"
+    alt="background image"
+    class="w-full h-16 object-cover mb-6"
+  />
+  <div class="px-4 text-2xl font-bold text-gray-800">Chat Channel</div>
+
+  <!-- Connection Status -->
+  <div
+    *ngIf="!isConnected"
+    class="px-4 py-2 bg-yellow-100 text-yellow-800 rounded-md"
+  >
+    Statut: Déconnecté - tentative de reconnexion...
+  </div>
+
+  <!-- Error message -->
+  <div *ngIf="error" class="px-4 py-2 my-2 bg-red-100 text-red-800 rounded-md">
+    {{ error }}
+  </div>
+</div>
+
+<div class="flex flex-col h-screen bg-gray-50">
+  <!-- Loading indicator -->
+  <div *ngIf="isLoading" class="flex justify-center p-4">
+    <div
+      class="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"
+    ></div>
+  </div>
+
+  <!-- Messages area -->
+  <div #messagesContainer class="flex-1 overflow-y-auto p-4 space-y-4">
+    <div
+      *ngFor="let msg of messages"
+      class="flex"
+      [ngClass]="{
+        'justify-end': msg.userId === currentUserId,
+        'justify-start': msg.userId !== currentUserId
+      }"
+    >
+      <div
+        [ngClass]="{
+          'max-w-xs p-3 rounded-lg my-1': true,
+          'bg-blue-100 text-blue-800': msg.userId === currentUserId,
+          'bg-gray-200 text-gray-800': msg.userId !== currentUserId
+        }"
+      >
+        <span class="block font-semibold">
+          {{ msg.sender }} ({{ msg.timestamp | date : "short" }})
+        </span>
+        <span>{{ msg.content }}</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Message input -->
+  <div class="flex items-center p-4 bg-white border-t border-gray-300">
+    <input
+      [(ngModel)]="message"
+      type="text"
+      placeholder="Écrivez un message..."
+      class="flex-1 border border-gray-300 rounded-lg p-2 text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+      (keyup.enter)="sendMessage()"
+      [disabled]="!isConnected"
+    />
+    <button
+      (click)="sendMessage()"
+      [disabled]="!isConnected || !message.trim()"
+      class="ml-4 px-4 py-2 rounded-lg focus:outline-none focus:ring-2"
+      [ngClass]="{
+        'bg-teal-light text-white hover:bg-teal-dark':
+          isConnected && message.trim(),
+        'bg-gray-300 text-gray-500 cursor-not-allowed':
+          !isConnected || !message.trim()
+      }"
+    >
+      Envoyer
+    </button>
+  </div>
+</div>
