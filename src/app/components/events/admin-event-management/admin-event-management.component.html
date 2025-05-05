@@ -1,0 +1,97 @@
+<div class="container mx-auto px-4 py-8">
+  <h1 class="text-3xl font-bold text-gray-800 mb-6">Event Management</h1>
+  
+  <div class="bg-white rounded-lg shadow-md p-6 mb-8">
+    
+    <div *ngIf="pendingEvents.length === 0" class="text-gray-500 py-4">
+      No pending events to review.
+    </div>
+    
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <app-admin-event-card 
+        *ngFor="let event of pendingEvents" 
+        [event]="event"
+        (viewDetails)="handleViewDetails($event)"
+        (statusChange)="handleStatusChange($event)">
+      </app-admin-event-card>
+    </div>
+  </div>
+  
+  <!-- Event Details Modal -->
+  <div *ngIf="showDetailsModal && selectedEvent" class="fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center z-50">
+    <div class="bg-white rounded-lg w-full max-w-3xl max-h-screen overflow-y-auto p-6">
+      <div class="flex justify-between items-center mb-4">
+        <h3 class="text-2xl font-bold text-gray-800">Event Details</h3>
+        <button (click)="closeDetailsModal()" class="text-gray-500 hover:text-gray-700">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+      
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="md:col-span-1">
+          <img 
+            class="w-full h-48 object-cover rounded-lg" 
+            [src]="getImageUrl(selectedEvent.imageUrl)" 
+            alt="Event Image"
+            (error)="handleImageError($event)"
+          />
+        </div>
+        
+        <div class="md:col-span-2">
+          <div class="mb-4">
+            <h4 class="text-sm font-semibold text-gray-500">Title</h4>
+            <p class="text-lg font-semibold">{{ selectedEvent.title }}</p>
+          </div>
+          
+          <div class="mb-4">
+            <h4 class="text-sm font-semibold text-gray-500">Description</h4>
+            <p>{{ selectedEvent.description }}</p>
+          </div>
+          
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+            <div>
+              <h4 class="text-sm font-semibold text-gray-500">Start Date</h4>
+              <p class="mt-1 text-sm text-gray-800">
+                {{ formatDate(selectedEvent.date_start || selectedEvent.startDate) }}
+              </p>
+            </div>
+            
+            <div>
+              <h4 class="text-sm font-semibold text-gray-500">End Date</h4>
+              <p class="mt-1 text-sm text-gray-800">
+                {{ formatDate(selectedEvent.date_end || selectedEvent.endDate) }}
+              </p>
+            </div>
+          </div>
+          
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+            <div>
+              <h4 class="text-sm font-semibold text-gray-500">Capacity</h4>
+              <p>{{ selectedEvent.capacity }} people</p>
+            </div>
+            <div>
+              <h4 class="text-sm font-semibold text-gray-500">Visibility</h4>
+              <p>{{ selectedEvent.is_private ? 'Private' : 'Public' }}</p>
+            </div>
+          </div>
+          
+          <div class="flex space-x-4">
+            <button 
+              (click)="handleStatusChange({eventId: selectedEvent.id, status: 'ACCEPTED'})"
+              class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors">
+              Accept Event
+            </button>
+            
+            <button 
+              (click)="handleStatusChange({eventId: selectedEvent.id, status: 'REJECTED'})"
+              class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors">
+              Reject Event
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

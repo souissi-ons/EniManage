@@ -70,9 +70,9 @@ export class EventCardComponent {
 
   get eventStatusClass() {
     return {
-      'bg-green-100 text-green-800': this.event.status === 'accepted',
-      'bg-yellow-100 text-yellow-800': this.event.status === 'pending',
-      'bg-red-100 text-red-800': this.event.status === 'rejected'
+      'bg-green-100 text-green-800': this.event.status === 'ACCEPTED',
+      'bg-yellow-100 text-yellow-800': this.event.status === 'PENDING',
+      'bg-red-100 text-red-800': this.event.status === 'REJECTED'
     };
   }
 }
