@@ -10,7 +10,7 @@ import { AddUserComponent } from './components/users/add-user/add-user.component
 import { ConfirmationDialogComponent } from './components/common/confirmation-dialog/confirmation-dialog.component';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { EventCardComponent } from './components/events/event-card/event-card.component';
-import { EventsComponent } from './components/events/events/events.component';
+import { EventsClubComponent } from './components/events/Events-Club/events-club.component';
 import { UpdateUserComponent } from './components/users/update-user/update-user.component';
 import { ResourcesComponent } from './components/resources/resources/resources.component';
 import { AddResourceComponent } from './components/resources/add-resource/add-resource.component';
@@ -28,6 +28,9 @@ import { RequestEventComponent } from './components/events/request-event/request
 import { ReactiveFormsModule } from '@angular/forms';
 import { CorsInterceptor } from './interceptors/cors.interceptor';
 import { FeedbackComponent } from './components/events/feedback/feedback.component';
+import { ProfileComponent } from './components/users/profile/profile.component';
+import { ClubMembersComponent } from './components/users/club-members/club-members.component';
+import { ClubEventCardComponent } from './components/events/club-event-card/club-event-card.component';
 
 function initializeApp(authService: AuthService) {
   return () => {
@@ -62,7 +65,7 @@ function initializeApp(authService: AuthService) {
     UpdateUserComponent,
     ConfirmationDialogComponent,
     EventCardComponent,
-    EventsComponent,
+    EventsClubComponent,
     ResourcesComponent,
     AddResourceComponent,
     EditResourceComponent,
@@ -73,6 +76,7 @@ function initializeApp(authService: AuthService) {
     AdminEventCardComponent,
     AdminEventManagementComponent,
     FeedbackComponent,
+    ClubEventCardComponent,
   ],
   providers: [
     {
