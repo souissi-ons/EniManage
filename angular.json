@@ -63,12 +63,13 @@
             }
           },
           "defaultConfiguration": "development"
-        },
-        "extract-i18n": {
-          "builder": "@angular-devkit/build-angular:extract-i18n",
-          "options": {
-            "browserTarget": "gestion_events:build"
-          }
+          },
+          "extract-i18n": {
+            "builder": "@angular-devkit/build-angular:extract-i18n",
+            "options": {
+              "browserTarget": "gestion_events:build"
+              
+            }
         },
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
