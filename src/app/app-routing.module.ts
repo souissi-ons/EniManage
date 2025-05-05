@@ -11,6 +11,7 @@ import { AdminEventCardComponent } from './components/events/admin-event-card/ad
 import { ChatComponent } from './components/chat/chat/chat.component';
 import { ProfileComponent } from './components/users/profile/profile.component';
 import { ClubMembersComponent } from './components/users/club-members/club-members.component';
+import { RoleGuard } from './guards/role.guard';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -18,18 +19,70 @@ const routes: Routes = [
     path: '',
     canActivate: [AuthGuard],
     children: [
-      { path: 'users', component: UsersComponent },
-      { path: 'resources', component: ResourcesComponent },
-      { path: 'rooms', component: SallesComponent },
-      { path: 'events', component: EventsClubComponent },
-      { path: 'admin-event', component: AdminEventManagementComponent },
-      { path: 'admin-card', component: AdminEventCardComponent },
-      { path: 'chat', component: ChatComponent },
-      { path: 'profile', component: ProfileComponent },
-      { path: 'membership', component: ClubMembersComponent },
-      { path: '', redirectTo: '/users', pathMatch: 'full' },
-    ],
+      {
+        path: 'users',
+        component: UsersComponent,
+        canActivate: [RoleGuard],
+        data: { roles: ['ADMIN'] }
+      },
+      {
+        path: 'resources',
+        component: ResourcesComponent,
+        canActivate: [RoleGuard],
+        data: { roles: ['ADMIN'] }
+      },
+      {
+        path: 'rooms',
+        component: SallesComponent,
+        canActivate: [RoleGuard],
+        data: { roles: ['ADMIN'] }
+      },
+      {
+        path: 'admin-event',
+        component: AdminEventManagementComponent,
+        canActivate: [RoleGuard],
+        data: { roles: ['ADMIN'] }
+      },
+      {
+        path: 'admin-card',
+        component: AdminEventCardComponent,
+        canActivate: [RoleGuard],
+        data: { roles: ['ADMIN'] }
+      },
+      {
+        path: 'club-events',
+        component: EventsClubComponent,
+        canActivate: [RoleGuard],
+        data: { roles: ['CLUB'] }
+      },
+      {
+        path: 'membership',
+        component: ClubMembersComponent,
+        canActivate: [RoleGuard],
+        data: { roles: ['CLUB'] }
+      },
+      {
+        path: 'events',
+        component: EventsClubComponent,
+        canActivate: [RoleGuard],
+        data: { roles: ['STUDENT'] }
+      },
+      {
+        path: 'chat',
+        component: ChatComponent,
+        canActivate: [RoleGuard],
+        data: { roles: ['CLUB', 'STUDENT'] }
+      },
+      {
+        path: 'profile',
+        component: ProfileComponent,
+        canActivate: [RoleGuard],
+        data: { roles: ['ADMIN', 'CLUB', 'STUDENT'] }
+      },
+      { path: '', redirectTo: '/profile', pathMatch: 'full' },
+    ]
   },
+  { path: '**', redirectTo: '' },
 ];
 
 @NgModule({
