@@ -29,8 +29,9 @@ import { RequestEventComponent } from './components/events/request-event/request
 import { ReactiveFormsModule } from '@angular/forms';
 import { ChatComponent } from './components/chat/chat/chat.component';
 import { CorsInterceptor } from './interceptors/cors.interceptor';
+import { ProfileComponent } from './components/users/profile/profile.component';
+import { ClubMembersComponent } from './components/users/club-members/club-members.component';
 
-// Optional: Factory function for APP_INITIALIZER if you need auth on startup
 function initializeApp(authService: AuthService) {
   return () => {
     // Return a promise that resolves when auth is ready

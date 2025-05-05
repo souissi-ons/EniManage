@@ -11,10 +11,9 @@ export interface Users {
 }
 
 export interface Event {
-
   id: number;
   imageUrl: string;
-  request_id : number;
+  request_id: number;
   title: string;
   description: string;
   date_start: Date;
@@ -24,4 +23,11 @@ export interface Event {
   status: 'pending' | 'accepted' | 'rejected';
   creator_id: number;
   room_id: number;
+}
+
+export interface Membership {
+  id: number;
+  club: Users;
+  student: Users;
+  joinDate: Date;
 }
