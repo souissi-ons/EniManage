@@ -22,11 +22,18 @@ import { ErrorInterceptor } from './interceptors/error.interceptor';
 import { AuthInterceptor } from './interceptors/auth.interceptor';
 import { APP_INITIALIZER } from '@angular/core';
 import { AuthService } from './services/auth.service';
+import { ReactiveFormsModule } from '@angular/forms';
+import { AdminEventCardComponent } from './components/events/admin-event-card/admin-event-card.component';
+import { AdminEventManagementComponent } from './components/events/admin-event-management/admin-event-management.component';
+
 import { firstValueFrom } from 'rxjs';
 import { RequestEventComponent } from './components/events/request-event/request-event.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { ChatComponent } from './components/chat/chat/chat.component';
+import { CorsInterceptor } from './interceptors/cors.interceptor';
+import { ProfileComponent } from './components/users/profile/profile.component';
+import { ClubMembersComponent } from './components/users/club-members/club-members.component';
 
-// Optional: Factory function for APP_INITIALIZER if you need auth on startup
 function initializeApp(authService: AuthService) {
   return () => {
     // Return a promise that resolves when auth is ready
@@ -67,12 +74,30 @@ function initializeApp(authService: AuthService) {
     SallesComponent,
     AddSalleComponent,
     EditSalleComponent,
+    ReactiveFormsModule,
+    AdminEventCardComponent,
+    AdminEventManagementComponent
+    ChatComponent,
+    ProfileComponent,
+    ClubMembersComponent,
   ],
   providers: [
-    // Provide JWT interceptor first, then error interceptor
-    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
-    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
-    // Optional: Initialize auth on app startup
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: CorsInterceptor,
+      multi: true,
+    },
+
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true,
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: ErrorInterceptor,
+      multi: true,
+    },
     {
       provide: APP_INITIALIZER,
       useFactory: initializeApp,

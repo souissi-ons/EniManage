@@ -1,20 +1,24 @@
+import { EventStatus } from "./event-status";
+
 // event.model.ts
 export interface Event {
   id: number;
-  imageUrl: string;
-  request_id: number;
+  imageUrl?: string;
+  request_id?: number;
   title: string;
   description: string;
-  date_start: Date;
-  date_end: Date;
+  date_start?: Date | string;
+  date_end?: Date | string;
+  startDate?: Date | string; 
+  endDate?: Date | string;   
   is_private: boolean;
   capacity: number;
-  status: 'pending' | 'accepted' | 'rejected';
   creator_id: number;
   room_id: number;
   currentParticipants?: number;
   canGiveFeedback?: boolean;
   isParticipating?: boolean;
+  status: EventStatus;
 }
 
 export interface Feedback {

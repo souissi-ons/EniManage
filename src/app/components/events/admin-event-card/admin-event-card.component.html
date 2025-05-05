@@ -1,0 +1,64 @@
+<div class="w-auto rounded-lg bg-white shadow-md overflow-hidden flex flex-col h-96">
+  <div class="relative">
+    <img
+      class="w-full h-32 object-cover"
+      [src]="getImageUrl(event.imageUrl)"
+      alt="Event Image"
+      (error)="handleImageError($event)"
+    />
+    <span class="absolute top-2 right-2 px-2 py-1 text-xs font-semibold rounded-full"
+      [ngClass]="{
+        'bg-yellow-100 text-yellow-800': event.status === 'PENDING',
+        'bg-green-100 text-green-800': event.status === 'ACCEPTED',
+        'bg-red-100 text-red-800': event.status === 'REJECTED'
+      }">
+      {{ event.status }}
+    </span>
+  </div>
+  
+  <div class="p-4 flex flex-col flex-grow">
+    <div class="text-sm text-gray-600">Event #{{ event.id }}</div>
+    <div class="text-lg font-semibold text-gray-800 mb-2">{{ event.title }}</div>
+    
+    <div class="text-sm text-gray-600 mb-2">
+      <div class="flex items-center mb-1">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+        </svg>
+        {{ (event.date_start || event.startDate) | date:'shortDate' }}
+      </div>
+      <div class="flex items-center">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+        </svg>
+        Capacity: {{ event.capacity }}
+      </div>
+    </div>
+    
+    <div class="text-sm text-gray-600 mb-4 line-clamp-2 overflow-hidden">
+      {{ event.description }}
+    </div>
+    
+    <div class="mt-auto flex flex-col gap-2">
+      <button 
+        class="w-full text-center p-2 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-colors"
+        (click)="viewDetails.emit(event.id)">
+        View Details
+      </button>
+      
+      <div class="flex gap-2">
+        <button 
+          class="flex-1 text-center p-2 bg-green-600 text-white rounded-lg font-medium hover:bg-green-700 transition-colors"
+          (click)="acceptEvent()">
+          Accept
+        </button>
+        
+        <button 
+          class="flex-1 text-center p-2 bg-red-600 text-white rounded-lg font-medium hover:bg-red-700 transition-colors"
+          (click)="rejectEvent()">
+          Reject
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

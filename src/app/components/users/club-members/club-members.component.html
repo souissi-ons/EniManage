@@ -1,0 +1,156 @@
+<div class="container mx-auto px-4 py-6" *ngIf="currentUser?.role === 'CLUB'">
+  <img
+    src="assets/bg.png"
+    alt="background image"
+    class="w-full h-20 object-cover rounded-md mb-6"
+  />
+
+  <h1 class="text-3xl font-bold text-gray-800 mb-4">
+    Gestion des membres du club
+  </h1>
+
+  <div
+    *ngIf="errorMessage"
+    class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-6 rounded-md"
+  >
+    {{ errorMessage }}
+  </div>
+
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+    <!-- Membres actuels -->
+    <div>
+      <h2 class="text-xl font-semibold text-gray-700 mb-4">Membres actuels</h2>
+
+      <div class="relative mb-4">
+        <i
+          class="fa-solid fa-magnifying-glass absolute left-3 top-3 text-gray-400"
+        ></i>
+        <input
+          type="text"
+          [(ngModel)]="memberSearchTerm"
+          (input)="filterMembers()"
+          class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-teal-dark"
+          placeholder="Rechercher par nom..."
+        />
+      </div>
+
+      <div *ngIf="loading" class="flex justify-center py-6">
+        <div
+          class="animate-spin h-8 w-8 border-4 border-teal-dark border-t-transparent rounded-full"
+        ></div>
+      </div>
+
+      <ng-container *ngIf="!loading">
+        <div
+          *ngFor="let membership of filteredMemberships"
+          class="bg-white rounded-xl shadow p-4 mb-3 border border-gray-200"
+        >
+          <div class="flex justify-between items-center">
+            <div>
+              <p class="font-semibold text-gray-900">
+                {{ membership.student?.name }}
+              </p>
+              <p class="text-sm text-gray-500">
+                {{ membership.student?.email }}
+              </p>
+              <p class="text-xs text-gray-400 mt-1">
+                Membre depuis : {{ formatDate(membership.joinDate) }}
+              </p>
+            </div>
+            <button
+              (click)="removeMember(membership.id)"
+              [disabled]="loading"
+              class="text-red-600 hover:bg-red-100 rounded-full w-10 h-10 flex items-center justify-center transition"
+              title="Supprimer"
+            >
+              <i class="fa-solid fa-trash text-lg"></i>
+            </button>
+          </div>
+        </div>
+
+        <div
+          *ngIf="filteredMemberships.length === 0 && memberships.length > 0"
+          class="text-center text-gray-500 py-4"
+        >
+          Aucun membre ne correspond à votre recherche.
+        </div>
+        <div
+          *ngIf="memberships.length === 0"
+          class="text-center text-gray-500 py-4"
+        >
+          Aucun membre pour le moment.
+        </div>
+      </ng-container>
+    </div>
+
+    <!-- Étudiants disponibles -->
+    <div>
+      <h2 class="text-xl font-semibold text-gray-700 mb-4">
+        Étudiants disponibles
+      </h2>
+
+      <div class="relative mb-4">
+        <i
+          class="fa-solid fa-magnifying-glass absolute left-3 top-3 text-gray-400"
+        ></i>
+        <input
+          type="text"
+          [(ngModel)]="studentSearchTerm"
+          (input)="filterStudents()"
+          class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-teal-dark"
+          placeholder="Rechercher par nom..."
+        />
+      </div>
+
+      <div *ngIf="loading" class="flex justify-center py-6">
+        <div
+          class="animate-spin h-8 w-8 border-4 border-teal-dark border-t-transparent rounded-full"
+        ></div>
+      </div>
+
+      <ng-container *ngIf="!loading">
+        <div
+          *ngFor="let student of filteredNonMembers"
+          class="bg-white rounded-xl shadow p-4 mb-3 border border-gray-200"
+        >
+          <div class="flex justify-between items-center">
+            <div>
+              <p class="font-semibold text-gray-900">{{ student.name }}</p>
+              <p class="text-sm text-gray-500">{{ student.email }}</p>
+            </div>
+            <button
+              (click)="addMember(student.id)"
+              [disabled]="loading"
+              class="text-green-600 hover:bg-green-100 rounded-full w-10 h-10 flex items-center justify-center transition"
+              title="Ajouter"
+            >
+              <i class="fa-solid fa-plus text-lg"></i>
+            </button>
+          </div>
+        </div>
+
+        <div
+          *ngIf="filteredNonMembers.length === 0 && nonMembers.length > 0"
+          class="text-center text-gray-500 py-4"
+        >
+          Aucun étudiant ne correspond à votre recherche.
+        </div>
+        <div
+          *ngIf="nonMembers.length === 0"
+          class="text-center text-gray-500 py-4"
+        >
+          Tous les étudiants sont déjà membres.
+        </div>
+      </ng-container>
+    </div>
+  </div>
+</div>
+
+<!-- Message si l'utilisateur n'est pas CLUB -->
+<div *ngIf="currentUser?.role !== 'CLUB'" class="container mx-auto px-4 mt-6">
+  <div
+    class="bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700 p-4 rounded-md"
+  >
+    Cette fonctionnalité est réservée aux clubs.
+  </div>
+</div>
