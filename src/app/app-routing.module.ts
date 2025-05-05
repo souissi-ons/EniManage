@@ -11,6 +11,7 @@ import { AdminEventCardComponent } from './components/events/admin-event-card/ad
 import { ChatComponent } from './components/chat/chat/chat.component';
 import { ProfileComponent } from './components/users/profile/profile.component';
 import { ClubMembersComponent } from './components/users/club-members/club-members.component';
+import { FeedbackComponent } from './components/events/feedback/feedback.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -27,6 +28,7 @@ const routes: Routes = [
       { path: 'chat', component: ChatComponent },
       { path: 'profile', component: ProfileComponent },
       { path: 'membership', component: ClubMembersComponent },
+      { path: 'feedback', component: FeedbackComponent },
       { path: '', redirectTo: '/users', pathMatch: 'full' },
     ],
   },

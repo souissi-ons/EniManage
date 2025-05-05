@@ -10,7 +10,7 @@ import { EventsService } from 'src/app/services/events.service';
   templateUrl: './event-card.component.html',
   standalone: true,
   imports: [CommonModule, FormsModule],
-  styleUrls: ['./event-card.component.css']
+  styleUrls: ['./event-card.component.css'],
 })
 export class EventCardComponent {
   @Input() event!: Event;
@@ -19,15 +19,13 @@ export class EventCardComponent {
   showFeedbackModal = false;
   feedbackComment = '';
 
-  constructor(
-    private eventsService: EventsService
-  ) {}
+  constructor(private eventsService: EventsService) {}
 
   getImageUrl(): string {
     if (this.event.imageUrl) {
       return this.eventsService.getEventImageUrl(this.event.imageUrl);
     }
-    return 'assets/default-event.png'; 
+    return 'assets/default-event.png';
   }
 
   handleAttendEvent(eventId: number) {
@@ -35,10 +33,11 @@ export class EventCardComponent {
     this.eventsService.attendEvent(eventId, userId).subscribe({
       next: () => {
         this.event.isParticipating = true;
-        this.event.currentParticipants = (this.event.currentParticipants || 0) + 1;
+        this.event.currentParticipants =
+          (this.event.currentParticipants || 0) + 1;
         this.updateNeeded.emit();
       },
-      error: (error: Error) => console.error('Erreur participation:', error)
+      error: (error: Error) => console.error('Erreur participation:', error),
     });
   }
 
@@ -46,18 +45,7 @@ export class EventCardComponent {
     this.showFeedbackModal = true;
   }
 
-  submitFeedback() {
-    if (this.feedbackComment.trim()) {
-      const userId = 1;
-      this.eventsService.addFeedback(this.event.id, userId, this.feedbackComment).subscribe({
-        next: () => {
-          this.updateNeeded.emit();
-          this.closeFeedbackModal();
-        },
-        error: (error: Error) => console.error('Erreur feedback:', error)
-      });
-    }
-  }
+  submitFeedback() {}
 
   closeFeedbackModal() {
     this.showFeedbackModal = false;
@@ -72,7 +60,7 @@ export class EventCardComponent {
     return {
       'bg-green-100 text-green-800': this.event.status === 'ACCEPTED',
       'bg-yellow-100 text-yellow-800': this.event.status === 'PENDING',
-      'bg-red-100 text-red-800': this.event.status === 'REJECTED'
+      'bg-red-100 text-red-800': this.event.status === 'REJECTED',
     };
   }
 }
