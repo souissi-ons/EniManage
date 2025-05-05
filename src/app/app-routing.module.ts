@@ -22,13 +22,12 @@ const routes: Routes = [
       { path: 'resources', component: ResourcesComponent },
       { path: 'rooms', component: SallesComponent },
       { path: 'events', component: EventsComponent },
-      {path: 'admin-event' , component: AdminEventManagementComponent},
-      {path: 'admin-card' , component: AdminEventCardComponent},
+      { path: 'admin-event', component: AdminEventManagementComponent },
+      { path: 'admin-card', component: AdminEventCardComponent },
       { path: 'chat', component: ChatComponent },
       { path: 'profile', component: ProfileComponent },
       { path: 'membership', component: ClubMembersComponent },
       { path: '', redirectTo: '/users', pathMatch: 'full' },
-
     ],
   },
 ];
