@@ -4,18 +4,21 @@ import { EventsService } from '../../../services/events.service';
 import { CommonModule } from '@angular/common';
 import { EventCardComponent } from '../event-card/event-card.component';
 import { AuthService } from '../../../services/auth.service';
+import { PopupComponent } from "../../common/popup/popup.component";
+import { RequestEventComponent } from "../request-event/request-event.component";
 
 @Component({
   selector: 'app-events',
   templateUrl: './events.component.html',
   styleUrls: ['./events.component.css'],
   standalone: true,
-  imports: [CommonModule, EventCardComponent],
+  imports: [CommonModule, EventCardComponent, PopupComponent, RequestEventComponent],
 })
 export class EventsComponent implements OnInit {
   events: Event[] = [];
   loading = true;
   error: string | null = null;
+  showRequestEventPopup = false;
 
   constructor(
     private eventsService: EventsService,
@@ -52,5 +55,16 @@ export class EventsComponent implements OnInit {
 
   handleRequestEvent() {
     console.log('Request event clicked');
+    this.showRequestEventPopup = true;
+  } 
+
+  closeRequestEventPopup() {
+    this.showRequestEventPopup = false;
+    this.loadEvents();
+  }
+
+  handleEventRequested() {
+    this.showRequestEventPopup = false;
+    this.loadEvents();
   }
 }
