@@ -22,10 +22,11 @@ import { ErrorInterceptor } from './interceptors/error.interceptor';
 import { AuthInterceptor } from './interceptors/auth.interceptor';
 import { APP_INITIALIZER } from '@angular/core';
 import { AuthService } from './services/auth.service';
-import { ReactiveFormsModule } from '@angular/forms';
 import { AdminEventCardComponent } from './components/events/admin-event-card/admin-event-card.component';
 import { AdminEventManagementComponent } from './components/events/admin-event-management/admin-event-management.component';
+import { firstValueFrom } from 'rxjs';
 import { RequestEventComponent } from './components/events/request-event/request-event.component';
+import { ReactiveFormsModule } from '@angular/forms';
 import { ChatComponent } from './components/chat/chat/chat.component';
 import { CorsInterceptor } from './interceptors/cors.interceptor';
 import { ProfileComponent } from './components/users/profile/profile.component';
@@ -74,8 +75,6 @@ function initializeApp(authService: AuthService) {
     ReactiveFormsModule,
     AdminEventCardComponent,
     AdminEventManagementComponent,
-    ProfileComponent,
-    ClubMembersComponent,
   ],
   providers: [
     {

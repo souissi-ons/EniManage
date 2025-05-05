@@ -1,10 +1,10 @@
 // events.service.ts
 import { Injectable } from '@angular/core';
+import { EventStatus } from '../models/event-status';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, catchError, map, tap } from 'rxjs';
 import { Event, Feedback, Participant } from '../models/event';
 import { AuthService } from './auth.service';
-import { EventStatus } from '../models/event-status';
 
 @Injectable({
   providedIn: 'root',
