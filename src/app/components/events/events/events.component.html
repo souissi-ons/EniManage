@@ -9,12 +9,13 @@
 
 <div class="bg-white py-4 md:py-7 px-4 md:px-8 xl:px-10">
   <div class="flex justify-end">
-    <button routerLink="/add-event"
-      class="focus:ring-2 focus:ring-offset-2 focus:ring-teal-dark mt-4 sm:mt-0 inline-flex items-start justify-start px-6 py-3 bg-teal-light hover:bg-teal-dark focus:outline-none rounded">
+    <button
+      (click)="handleRequestEvent()"
+      class="focus:ring-2 focus:ring-offset-2 focus:ring-teal-dark mt-4 sm:mt-0 inline-flex items-start justify-start px-6 py-3 bg-teal-light hover:bg-teal-dark focus:outline-none rounded"
+    >
       <p class="text-sm font-medium leading-none text-white">Request Event</p>
     </button>
   </div>
-
 
   <div
     class="p-6 px-0 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 justify-items-center mt-auto"
@@ -28,12 +29,12 @@
   </div>
 </div>
 <app-popup
-[title]="'Request Event'"
-[show]="showRequestEventPopup"
-(close)="closeRequestEventPopup()"
+  [title]="'Request Event'"
+  [show]="showRequestEventPopup"
+  (close)="closeRequestEventPopup()"
 >
   <app-request-event
-  (eventRequested)="handleEventRequested()"
-  (closeModal)="closeRequestEventPopup()"
+    (eventRequested)="handleEventRequested()"
+    (closeModal)="closeRequestEventPopup()"
   ></app-request-event>
 </app-popup>

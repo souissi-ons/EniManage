@@ -1,5 +1,12 @@
 import { Component, EventEmitter, Output, OnInit } from '@angular/core';
-import { FormBuilder, ReactiveFormsModule, FormArray, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
+import {
+  FormBuilder,
+  ReactiveFormsModule,
+  FormArray,
+  Validators,
+  AbstractControl,
+  ValidationErrors,
+} from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { SalleService } from '../../../services/salle.service';
@@ -16,7 +23,7 @@ import { EventResource } from '../../../models/event';
   templateUrl: './request-event.component.html',
   styleUrls: ['./request-event.component.css'],
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule]
+  imports: [CommonModule, ReactiveFormsModule],
 })
 export class RequestEventComponent implements OnInit {
   @Output() eventRequested = new EventEmitter<void>();
@@ -36,18 +43,21 @@ export class RequestEventComponent implements OnInit {
     private resourceService: ResourceService
   ) {}
 
-  eventForm = this.fb.group({
-    title: ['', [Validators.required, Validators.minLength(1)]],
-    description: ['', [Validators.required, Validators.minLength(1)]],
-    dateStart: ['', Validators.required],
-    dateEnd: ['', Validators.required],
-    isPrivate: [false],
-    capacity: [null, [Validators.required, Validators.min(1)]],
-    salleId: [null, Validators.required],
-    resources: this.fb.array([])
-  }, {
-    validators: [this.dateRangeValidator]
-  });
+  eventForm = this.fb.group(
+    {
+      title: ['', [Validators.required, Validators.minLength(1)]],
+      description: ['', [Validators.required, Validators.minLength(1)]],
+      dateStart: ['', Validators.required],
+      dateEnd: ['', Validators.required],
+      isPrivate: [false],
+      capacity: [null, [Validators.required, Validators.min(1)]],
+      salleId: [null, Validators.required],
+      resources: this.fb.array([]),
+    },
+    {
+      validators: [this.dateRangeValidator],
+    }
+  );
 
   get resourcesFormArray() {
     return this.eventForm.get('resources') as FormArray;
@@ -60,10 +70,16 @@ export class RequestEventComponent implements OnInit {
 
     // Re-run validation when start or end date changes
     this.eventForm.get('dateStart')?.valueChanges.subscribe(() => {
-      this.eventForm.updateValueAndValidity({ onlySelf: false, emitEvent: false });
+      this.eventForm.updateValueAndValidity({
+        onlySelf: false,
+        emitEvent: false,
+      });
     });
     this.eventForm.get('dateEnd')?.valueChanges.subscribe(() => {
-      this.eventForm.updateValueAndValidity({ onlySelf: false, emitEvent: false });
+      this.eventForm.updateValueAndValidity({
+        onlySelf: false,
+        emitEvent: false,
+      });
     });
   }
 
@@ -77,15 +93,15 @@ export class RequestEventComponent implements OnInit {
 
   loadSalles() {
     this.salleService.getAllSalles().subscribe({
-      next: (salles) => this.salles = salles,
-      error: (err) => console.error('Error loading salles:', err)
+      next: (salles) => (this.salles = salles),
+      error: (err) => console.error('Error loading salles:', err),
     });
   }
 
   loadResources() {
     this.resourceService.getResources().subscribe({
-      next: (resources) => this.availableResources = resources,
-      error: (err) => console.error('Error loading resources:', err)
+      next: (resources) => (this.availableResources = resources),
+      error: (err) => console.error('Error loading resources:', err),
     });
   }
 
@@ -102,9 +118,9 @@ export class RequestEventComponent implements OnInit {
   addResource() {
     const resourceForm = this.fb.group({
       resourceId: ['', Validators.required],
-      quantity: [1, [Validators.required, Validators.min(1)]]
+      quantity: [1, [Validators.required, Validators.min(1)]],
     });
-    
+
     this.resourcesFormArray.push(resourceForm);
   }
 
@@ -117,7 +133,7 @@ export class RequestEventComponent implements OnInit {
     if (input.files?.[0]) {
       this.selectedFile = input.files[0];
       const reader = new FileReader();
-      reader.onload = () => this.imagePreview = reader.result;
+      reader.onload = () => (this.imagePreview = reader.result);
       reader.readAsDataURL(this.selectedFile);
     }
   }
@@ -125,48 +141,49 @@ export class RequestEventComponent implements OnInit {
   onSubmit() {
     if (this.eventForm.valid && this.currentUserId) {
       const formData = new FormData();
-  
+
       const resources = this.resourcesFormArray.value.filter(
         (resource: any) => resource.resourceId && resource.quantity > 0
       );
-  
+
       const eventData = {
         ...this.eventForm.value,
         resources: resources,
         creatorId: this.currentUserId,
         dateStart: new Date(this.eventForm.value.dateStart!).toISOString(),
         dateEnd: new Date(this.eventForm.value.dateEnd!).toISOString(),
-        status: 'PENDING'
+        status: 'PENDING',
       };
-  
-      formData.append('eventDTO', new Blob([JSON.stringify(eventData)], {
-        type: 'application/json'
-      }));
-  
+
+      formData.append(
+        'eventDTO',
+        new Blob([JSON.stringify(eventData)], {
+          type: 'application/json',
+        })
+      );
+
       if (this.selectedFile) {
         formData.append('image', this.selectedFile, this.selectedFile.name);
       }
-  
+
       this.eventsService.createEvent(formData).subscribe({
         next: () => {
-          this.eventRequested.emit();      // Refresh events list (if needed)
-  
-          
+          this.eventRequested.emit(); // Refresh events list (if needed)
+
           this.imagePreview = null;
           this.selectedFile = null;
-  
+
           // Optional: Re-initialize checkbox if needed
           this.eventForm.patchValue({ isPrivate: false });
 
-          this.eventForm.reset();          // Reset form controls
+          this.eventForm.reset(); // Reset form controls
           this.resourcesFormArray.clear(); // Clear the FormArray
-          this.closeModal.emit();          // Close the popup
-
+          this.closeModal.emit(); // Close the popup
         },
         error: (err) => {
           console.error('Error creating event:', err);
-        }
+        },
       });
     }
-  }  
+  }
 }

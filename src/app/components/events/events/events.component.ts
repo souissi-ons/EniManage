@@ -4,15 +4,20 @@ import { EventsService } from '../../../services/events.service';
 import { CommonModule } from '@angular/common';
 import { EventCardComponent } from '../event-card/event-card.component';
 import { AuthService } from '../../../services/auth.service';
-import { PopupComponent } from "../../common/popup/popup.component";
-import { RequestEventComponent } from "../request-event/request-event.component";
+import { PopupComponent } from '../../common/popup/popup.component';
+import { RequestEventComponent } from '../request-event/request-event.component';
 
 @Component({
   selector: 'app-events',
   templateUrl: './events.component.html',
   styleUrls: ['./events.component.css'],
   standalone: true,
-  imports: [CommonModule, EventCardComponent, PopupComponent, RequestEventComponent],
+  imports: [
+    CommonModule,
+    EventCardComponent,
+    PopupComponent,
+    RequestEventComponent,
+  ],
 })
 export class EventsComponent implements OnInit {
   events: Event[] = [];
@@ -43,9 +48,10 @@ export class EventsComponent implements OnInit {
       },
       error: (error) => {
         console.error('EventsComponent: Error loading events:', error);
-        this.error = 'Une erreur est survenue lors du chargement des événements.';
+        this.error =
+          'Une erreur est survenue lors du chargement des événements.';
         this.loading = false;
-      }
+      },
     });
   }
 
@@ -56,7 +62,7 @@ export class EventsComponent implements OnInit {
   handleRequestEvent() {
     console.log('Request event clicked');
     this.showRequestEventPopup = true;
-  } 
+  }
 
   closeRequestEventPopup() {
     this.showRequestEventPopup = false;
