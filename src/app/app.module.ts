@@ -23,6 +23,8 @@ import { AuthInterceptor } from './interceptors/auth.interceptor';
 import { APP_INITIALIZER } from '@angular/core';
 import { AuthService } from './services/auth.service';
 import { firstValueFrom } from 'rxjs';
+import { RequestEventComponent } from './components/events/request-event/request-event.component';
+import { ReactiveFormsModule } from '@angular/forms';
 import { ChatComponent } from './components/chat/chat/chat.component';
 import { CorsInterceptor } from './interceptors/cors.interceptor';
 
@@ -47,9 +49,11 @@ function initializeApp(authService: AuthService) {
 @NgModule({
   declarations: [AppComponent],
   imports: [
+    RequestEventComponent,
     BrowserModule,
     HttpClientModule,
     AppRoutingModule,
+    ReactiveFormsModule,
     LoginComponent,
     UsersComponent,
     SidebarComponent,

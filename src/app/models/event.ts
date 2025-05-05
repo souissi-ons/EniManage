@@ -33,3 +33,10 @@ export interface Participant {
   date_inscription: Date;
   user_name?: string;
 }
+
+export interface EventResource {
+
+resourceId: number;
+quantity: number;
+resourceName?: string;
+}
