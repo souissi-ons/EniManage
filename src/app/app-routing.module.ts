@@ -8,6 +8,8 @@ import { SallesComponent } from './components/salles/salles/salles.component';
 import { AuthGuard } from './guards/auth.guard';
 import { AdminEventManagementComponent } from './components/events/admin-event-management/admin-event-management.component';
 import { AdminEventCardComponent } from './components/events/admin-event-card/admin-event-card.component';
+import { ChatComponent } from './components/chat/chat/chat.component';
+
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
   {
@@ -20,6 +22,7 @@ const routes: Routes = [
       { path: 'events', component: EventsComponent },
       {path: 'admin-event' , component: AdminEventManagementComponent},
       {path: 'admin-card' , component: AdminEventCardComponent},
+      { path: 'chat', component: ChatComponent },
       { path: '', redirectTo: '/users', pathMatch: 'full' },
 
     ],
