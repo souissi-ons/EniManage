@@ -17,17 +17,36 @@
     </button>
   </div>
 
+  <!-- Loading indicator -->
+  <div *ngIf="loading" class="flex justify-center items-center py-12">
+    <div class="spinner-border text-teal-light" role="status">
+      <span class="sr-only">Loading...</span>
+    </div>
+  </div>
+
+  <!-- Error message -->
+  <div *ngIf="error" class="text-center py-8 text-red-600">
+    {{ error }}
+  </div>
+
+  <!-- No events message -->
+  <div *ngIf="!loading && !error && events.length === 0" class="text-center py-8 text-gray-600">
+    No events available. Use the "Request Event" button to create one.
+  </div>
+
+  <!-- Events grid -->
   <div
+    *ngIf="!loading && !error && events.length > 0"
     class="p-6 px-0 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 justify-items-center mt-auto"
   >
-    <app-event-card
+    <app-club-event-card
       *ngFor="let event of events"
       [event]="event"
-      (viewDetails)="handleViewDetails($event)"
-      class="w-64 rounded-lg shadow-md bg-white overflow-hidden"
-    ></app-event-card>
+      (viewDetails)="handleViewDetails($event)">
+    </app-club-event-card>
   </div>
 </div>
+
 <app-popup
   [title]="'Request Event'"
   [show]="showRequestEventPopup"

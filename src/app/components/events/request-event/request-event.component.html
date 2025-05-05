@@ -1,58 +1,29 @@
 <div class="max-w-4xl mx-auto p-6">
   <h2 class="text-2xl font-bold text-gray-800 mb-6">Create New Event</h2>
-
+  
   <form [formGroup]="eventForm" (ngSubmit)="onSubmit()" class="space-y-8">
     <!-- Basic Information Section -->
     <div class="bg-white rounded-lg shadow-sm p-6">
-      <h3 class="text-lg font-semibold text-gray-700 mb-4">
-        Basic Information
-      </h3>
+      <h3 class="text-lg font-semibold text-gray-700 mb-4">Basic Information</h3>
       <div class="space-y-6">
         <div>
-          <label class="block text-sm font-medium text-gray-700 mb-1"
-            >Title</label
-          >
-          <input
-            type="text"
-            formControlName="title"
-            class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 text-lg p-3"
-            [ngClass]="{
-              'border-red-500':
-                eventForm.get('title')?.invalid &&
-                eventForm.get('title')?.touched
-            }"
-          />
-          <div
-            *ngIf="
-              eventForm.get('title')?.invalid && eventForm.get('title')?.touched
-            "
-            class="mt-1 text-sm text-red-600"
-          >
+          <label class="block text-sm font-medium text-gray-700 mb-1">Title</label>
+          <input type="text" formControlName="title" 
+                 class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 text-lg p-3"
+                 [ngClass]="{'border-red-500': eventForm.get('title')?.invalid && eventForm.get('title')?.touched}">
+          <div *ngIf="eventForm.get('title')?.invalid && eventForm.get('title')?.touched" 
+               class="mt-1 text-sm text-red-600">
             Title is required
           </div>
         </div>
 
         <div>
-          <label class="block text-sm font-medium text-gray-700 mb-1"
-            >Description</label
-          >
-          <textarea
-            formControlName="description"
-            rows="4"
-            class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 text-lg p-3"
-            [ngClass]="{
-              'border-red-500':
-                eventForm.get('description')?.invalid &&
-                eventForm.get('description')?.touched
-            }"
-          ></textarea>
-          <div
-            *ngIf="
-              eventForm.get('description')?.invalid &&
-              eventForm.get('description')?.touched
-            "
-            class="mt-1 text-sm text-red-600"
-          >
+          <label class="block text-sm font-medium text-gray-700 mb-1">Description</label>
+          <textarea formControlName="description" rows="4"
+                    class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 text-lg p-3"
+                    [ngClass]="{'border-red-500': eventForm.get('description')?.invalid && eventForm.get('description')?.touched}"></textarea>
+          <div *ngIf="eventForm.get('description')?.invalid && eventForm.get('description')?.touched" 
+               class="mt-1 text-sm text-red-600">
             Description is required
           </div>
         </div>
@@ -64,172 +35,83 @@
       <h3 class="text-lg font-semibold text-gray-700 mb-4">Event Details</h3>
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div>
-          <label class="block text-sm font-medium text-gray-700 mb-1"
-            >Start Date & Time</label
-          >
-          <input
-            type="datetime-local"
-            formControlName="dateStart"
-            class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 text-lg p-3"
-            [ngClass]="{
-              'border-red-500':
-                eventForm.get('dateStart')?.invalid &&
-                eventForm.get('dateStart')?.touched
-            }"
-          />
+          <label class="block text-sm font-medium text-gray-700 mb-1">Start Date & Time</label>
+          <input type="datetime-local" formControlName="dateStart"
+                 class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 text-lg p-3"
+                 [ngClass]="{'border-red-500': eventForm.get('dateStart')?.invalid && eventForm.get('dateStart')?.touched}">
         </div>
         <div>
-          <label class="block text-sm font-medium text-gray-700 mb-1"
-            >End Date & Time</label
-          >
-          <input
-            type="datetime-local"
-            formControlName="dateEnd"
-            class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 text-lg p-3"
-            [ngClass]="{
-              'border-red-500':
-                eventForm.get('dateEnd')?.invalid &&
-                eventForm.get('dateEnd')?.touched
-            }"
-          />
+          <label class="block text-sm font-medium text-gray-700 mb-1">End Date & Time</label>
+          <input type="datetime-local" formControlName="dateEnd"
+                 class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 text-lg p-3"
+                 [ngClass]="{'border-red-500': eventForm.get('dateEnd')?.invalid && eventForm.get('dateEnd')?.touched}">
         </div>
-        <small
-          *ngIf="
-            eventForm.hasError('invalidDateRange') &&
-            (eventForm.get('dateStart')?.touched ||
-              eventForm.get('dateEnd')?.touched)
-          "
-          class="text-sm text-red-600 col-span-2"
-        >
-          End date must be after start date.
-        </small>
+        <small *ngIf="eventForm.hasError('invalidDateRange') && (eventForm.get('dateStart')?.touched || eventForm.get('dateEnd')?.touched)" 
+        class="text-sm text-red-600 col-span-2">
+   End date must be after start date.
+ </small>
       </div>
     </div>
 
     <!-- Venue Information Section -->
     <div class="bg-white rounded-lg shadow-sm p-6">
-      <h3 class="text-lg font-semibold text-gray-700 mb-4">
-        Venue Information
-      </h3>
+      <h3 class="text-lg font-semibold text-gray-700 mb-4">Venue Information</h3>
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div>
-          <label class="block text-sm font-medium text-gray-700 mb-1"
-            >Room</label
-          >
-          <select
-            formControlName="salleId"
-            class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 text-lg p-3 bg-white"
-            [ngClass]="{
-              'border-red-500':
-                eventForm.get('salleId')?.invalid &&
-                eventForm.get('salleId')?.touched
-            }"
-          >
+          <label class="block text-sm font-medium text-gray-700 mb-1">Room</label>
+          <select formControlName="salleId"
+                  class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 text-lg p-3 bg-white"
+                  [ngClass]="{'border-red-500': eventForm.get('salleId')?.invalid && eventForm.get('salleId')?.touched}">
             <option value="" disabled selected>Select a room</option>
             <option *ngFor="let salle of salles" [value]="salle.id">
               {{ salle.name }} (Capacity: {{ salle.capacity }})
             </option>
           </select>
-          <div
-            *ngIf="
-              eventForm.get('salleId')?.invalid &&
-              eventForm.get('salleId')?.touched
-            "
-            class="mt-1 text-sm text-red-600"
-          >
+          <div *ngIf="eventForm.get('salleId')?.invalid && eventForm.get('salleId')?.touched" 
+               class="mt-1 text-sm text-red-600">
             Please select a room
           </div>
         </div>
         <div>
-          <label class="block text-sm font-medium text-gray-700 mb-1"
-            >Capacity</label
-          >
-          <input
-            type="number"
-            formControlName="capacity"
-            class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 text-lg p-3"
-            [ngClass]="{
-              'border-red-500':
-                eventForm.get('capacity')?.invalid &&
-                eventForm.get('capacity')?.touched
-            }"
-          />
+          <label class="block text-sm font-medium text-gray-700 mb-1">Capacity</label>
+          <input type="number" formControlName="capacity" 
+                 class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 text-lg p-3"
+                 [ngClass]="{'border-red-500': eventForm.get('capacity')?.invalid && eventForm.get('capacity')?.touched}">
         </div>
       </div>
     </div>
 
     <!-- Resources Section (New) -->
     <div class="bg-white rounded-lg shadow-sm p-6">
-      <h3 class="text-lg font-semibold text-gray-700 mb-4">
-        Resources (Optional)
-      </h3>
+      <h3 class="text-lg font-semibold text-gray-700 mb-4">Resources (Optional)</h3>
       <div formArrayName="resources" class="space-y-4">
-        <div
-          *ngFor="let resource of resourcesFormArray.controls; let i = index"
-          [formGroupName]="i"
-          class="flex items-center space-x-4 p-3 bg-gray-50 rounded-md"
-        >
+        <div *ngFor="let resource of resourcesFormArray.controls; let i = index" [formGroupName]="i" 
+             class="flex items-center space-x-4 p-3 bg-gray-50 rounded-md">
           <div class="flex-grow">
-            <select
-              formControlName="resourceId"
-              class="w-full rounded-lg border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 text-md p-2"
-            >
+            <select formControlName="resourceId" 
+                    class="w-full rounded-lg border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 text-md p-2">
               <option value="" disabled selected>Select a resource</option>
-              <option
-                *ngFor="let resource of availableResources"
-                [value]="resource.id"
-              >
+              <option *ngFor="let resource of availableResources" [value]="resource.id">
                 {{ resource.name }} (Available: {{ resource.quantity }})
               </option>
             </select>
           </div>
           <div class="w-24">
-            <input
-              type="number"
-              formControlName="quantity"
-              placeholder="Quantity"
-              min="1"
-              class="w-full rounded-lg border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 p-2"
-            />
+            <input type="number" formControlName="quantity" placeholder="Quantity" min="1"
+                   class="w-full rounded-lg border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 p-2">
           </div>
-          <button
-            type="button"
-            (click)="removeResource(i)"
-            class="p-2 text-red-500 hover:text-red-700 focus:outline-none"
-          >
-            <svg
-              class="w-5 h-5"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-              ></path>
+          <button type="button" (click)="removeResource(i)" 
+                  class="p-2 text-red-500 hover:text-red-700 focus:outline-none">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
             </svg>
           </button>
         </div>
         <div class="pt-2">
-          <button
-            type="button"
-            (click)="addResource()"
-            class="inline-flex items-center px-3 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-teal-600 hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500"
-          >
-            <svg
-              class="mr-2 h-4 w-4"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M12 6v6m0 0v6m0-6h6m-6 0H6"
-              ></path>
+          <button type="button" (click)="addResource()" 
+                  class="inline-flex items-center px-3 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-teal-600 hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500">
+            <svg class="mr-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
             </svg>
             Add Resource
           </button>
@@ -239,92 +121,44 @@
 
     <!-- Event Image Section -->
     <div class="bg-white rounded-lg shadow-sm p-6">
-      <h3 class="text-lg font-semibold text-gray-700 mb-4">
-        Event Image (Optional)
-      </h3>
+      <h3 class="text-lg font-semibold text-gray-700 mb-4">Event Image (Optional)</h3>
       <div class="space-y-4">
         <div class="flex items-center justify-center w-full">
-          <label
-            class="flex flex-col items-center justify-center w-full h-32 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100"
-          >
+          <label class="flex flex-col items-center justify-center w-full h-32 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100">
             <div class="flex flex-col items-center justify-center pt-5 pb-6">
-              <svg
-                class="w-8 h-8 mb-4 text-gray-500"
-                aria-hidden="true"
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 20 16"
-              >
-                <path
-                  stroke="currentColor"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"
-                />
+              <svg class="w-8 h-8 mb-4 text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"/>
               </svg>
-              <p class="mb-2 text-sm text-gray-500">
-                Click to upload or drag and drop
-              </p>
-              <p class="text-xs text-gray-500">
-                PNG, JPG or GIF (MAX. 800x400px)
-              </p>
+              <p class="mb-2 text-sm text-gray-500">Click to upload or drag and drop</p>
+              <p class="text-xs text-gray-500">PNG, JPG or GIF (MAX. 800x400px)</p>
             </div>
-            <input
-              type="file"
-              (change)="onFileSelected($event)"
-              class="hidden"
-              accept="image/*"
-            />
+            <input type="file" (change)="onFileSelected($event)" class="hidden" accept="image/*">
           </label>
         </div>
         <div *ngIf="imagePreview" class="flex justify-center">
-          <img
-            [src]="imagePreview"
-            class="h-32 w-32 object-cover rounded-lg shadow-md"
-          />
+          <img [src]="imagePreview" class="h-32 w-32 object-cover rounded-lg shadow-md">
         </div>
       </div>
     </div>
 
     <!-- Additional Settings -->
     <div class="bg-white rounded-lg shadow-sm p-6">
-      <h3 class="text-lg font-semibold text-gray-700 mb-4">
-        Additional Settings
-      </h3>
+      <h3 class="text-lg font-semibold text-gray-700 mb-4">Additional Settings</h3>
       <div class="space-y-4">
         <div class="flex items-center">
-          <input
-            type="checkbox"
-            formControlName="isPrivate"
-            class="h-4 w-4 rounded border-gray-300 text-teal-600 focus:ring-teal-500"
-          />
-          <label class="ml-2 block text-sm text-gray-900"
-            >Make this a private event</label
-          >
+          <input type="checkbox" formControlName="isPrivate" 
+                 class="h-4 w-4 rounded border-gray-300 text-teal-600 focus:ring-teal-500">
+          <label class="ml-2 block text-sm text-gray-900">Make this a private event</label>
         </div>
       </div>
     </div>
 
     <!-- Submit Button -->
     <div class="flex justify-end">
-      <button
-        type="submit"
-        [disabled]="!eventForm.valid"
-        class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-teal-600 hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500 disabled:opacity-50 disabled:cursor-not-allowed"
-      >
-        <svg
-          class="mr-2 h-5 w-5"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-        >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M5 13l4 4L19 7"
-          ></path>
+      <button type="submit" [disabled]="!eventForm.valid"
+              class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-teal-600 hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500 disabled:opacity-50 disabled:cursor-not-allowed">
+        <svg class="mr-2 h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
         </svg>
         Submit Event Request
       </button>

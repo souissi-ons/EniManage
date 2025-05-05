@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { UsersComponent } from './components/users/users/users.component';
 import { LoginComponent } from './components/login/login.component';
-import { EventsComponent } from './components/events/events/events.component';
+import { EventsClubComponent } from './components/events/Events-Club/events-club.component';
 import { ResourcesComponent } from './components/resources/resources/resources.component';
 import { SallesComponent } from './components/salles/salles/salles.component';
 import { AuthGuard } from './guards/auth.guard';
@@ -21,7 +21,7 @@ const routes: Routes = [
       { path: 'users', component: UsersComponent },
       { path: 'resources', component: ResourcesComponent },
       { path: 'rooms', component: SallesComponent },
-      { path: 'events', component: EventsComponent },
+      { path: 'events', component: EventsClubComponent },
       { path: 'admin-event', component: AdminEventManagementComponent },
       { path: 'admin-card', component: AdminEventCardComponent },
       { path: 'chat', component: ChatComponent },
