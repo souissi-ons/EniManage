@@ -8,12 +8,24 @@
   <div class="p-4 flex flex-col flex-grow">
     <div class="text-sm text-gray-600">Event #{{ event.id }}</div>
     <div class="p-4 text-lg font-semibold text-gray-800">{{ event.title }}</div>
+    
+    <!-- Date display -->
+    <div class="text-sm text-gray-600 mb-2">
+      <div class="flex items-center mb-1">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+        </svg>
+        {{ getEventDate() }}
+      </div>
+    </div>
+    
     <div class="text-sm text-gray-600 mb-4 space-y-2">
       {{ event.description }}
     </div>
 
     <!-- Attend button -->
     <button
+
       *ngIf="getButtonState() === 'attend'"
       class="w-20 text-center mt-auto p-4 bg-white text-[#4FD1C5] border border-[#4FD1C5] py-2 rounded-xl font-medium hover:bg-[#4FD1C5] hover:text-white transition-colors"
       (click)="showConfirmModal = true">

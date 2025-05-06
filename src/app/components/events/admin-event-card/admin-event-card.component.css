@@ -1,0 +1,163 @@
+/* Teal Event Card Component Styling */
+
+/* Card base */
+.bg-white {
+    border: 1px solid #e6fffa;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  
+  .bg-white:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* Status badges */
+  .absolute.top-2.right-2 {
+    font-weight: 600;
+  }
+  
+  /* PENDING status */
+  [class*="bg-yellow-100"] {
+    background-color: #e6fffa !important;
+    color: #134e4a !important;
+    border: 1px solid #99f6e4;
+  }
+  
+  /* ACCEPTED status */
+  [class*="bg-green-100"] {
+    background-color: #0d9488 !important;
+    color: white !important;
+    border: none;
+  }
+  
+  /* REJECTED status */
+  [class*="bg-red-100"] {
+    background-color: #1a202c !important;
+    color: white !important;
+    border: none;
+  }
+  
+  /* Private/Public badge */
+  .text-xs.px-2.py-1.rounded-full {
+    font-weight: 600;
+  }
+  
+  /* Public badge */
+  [class*="bg-green-100"].text-green-800 {
+    background-color: #0d9488 !important;
+    color: white !important;
+  }
+  
+  /* Private badge */
+  [class*="bg-blue-100"].text-blue-800 {
+    background-color: #1a202c !important;
+    color: white !important;
+  }
+  
+  /* Event ID and title */
+  .text-gray-600 {
+    color: #134e4a !important;
+  }
+  
+  .text-gray-800 {
+    color: #1a202c !important;
+  }
+  
+  /* Icons */
+  svg {
+    color: #0d9488;
+  }
+  
+  /* Participation progress bar */
+  .bg-gray-200 {
+    background-color: #e6fffa !important;
+  }
+  
+  /* Progress bar colors - override all existing classes */
+  .h-2\.5.rounded-full:not(.bg-gray-200) {
+    background-color: #0d9488 !important;
+  }
+  
+  /* Resources section */
+  .font-medium {
+    color: #0d9488;
+  }
+  
+  .bg-gray-100 {
+    background-color: #e6fffa !important;
+    color: #134e4a;
+  }
+  
+  .text-gray-500.italic {
+    color: #134e4a !important;
+    opacity: 0.7;
+  }
+  
+  /* Buttons */
+  button {
+    transition: all 0.2s ease;
+  }
+  
+  /* View Details button */
+  [class*="bg-blue-600"] {
+    background-color: #0d9488 !important;
+    color: white !important;
+  }
+  
+  [class*="hover:bg-blue-700"] {
+    background-color: #0d9488 !important;
+  }
+  
+  [class*="hover:bg-blue-700"]:hover {
+    background-color: #134e4a !important;
+  }
+  
+  /* Accept button */
+  [class*="bg-green-600"] {
+    background-color: #0d9488 !important;
+    color: white !important;
+  }
+  
+  [class*="hover:bg-green-700"] {
+    background-color: #0d9488 !important;
+  }
+  
+  [class*="hover:bg-green-700"]:hover {
+    background-color: #134e4a !important;
+  }
+  
+  /* Reject button */
+  [class*="bg-red-600"] {
+    background-color: #1a202c !important;
+    color: white !important;
+  }
+  
+  [class*="hover:bg-red-700"] {
+    background-color: #1a202c !important;
+  }
+  
+  [class*="hover:bg-red-700"]:hover {
+    background-color: #000000 !important;
+  }
+  
+  /* Status text when not pending */
+  .text-center.p-2.rounded-lg.text-gray-600 {
+    background-color: #e6fffa;
+    color: #134e4a !important;
+    border: 1px solid #99f6e4;
+  }
+  
+  /* Description text */
+  .text-sm.text-gray-600.mb-4 {
+    color: #1a202c !important;
+  }
+  
+  /* Additional hover effects */
+  button:hover {
+    transform: translateY(-1px);
+  }
+  
+  /* Event image effect */
+  .object-cover {
+    border-bottom: 3px solid #0d9488;
+  }

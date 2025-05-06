@@ -11,6 +11,7 @@ import { PopupComponent } from '../../common/popup/popup.component';
   templateUrl: './event-card.component.html',
   standalone: true,
   imports: [CommonModule, FormsModule, PopupComponent],
+
   styleUrls: ['./event-card.component.css']
 })
 export class EventCardComponent implements OnInit {
@@ -56,13 +57,13 @@ export class EventCardComponent implements OnInit {
       }
     });
   }
-
   getImageUrl(): string {
     if (this.event.imageUrl) {
       return this.eventsService.getEventImageUrl(this.event.imageUrl);
     }
     return 'assets/default-event.png';
   }
+
 
   handleAttendClick() {
     if (!this.currentUserId) {
@@ -82,31 +83,41 @@ export class EventCardComponent implements OnInit {
     });
   }
 
-  getButtonState() {
-    const eventDate = this.event.date_end ? new Date(this.event.date_end) : new Date();
-    if (eventDate <= new Date()) {
-      return 'feedback';
-    }
-    return this.event.isParticipating ? 'attending' : 'attend';
-  }
-
   handleGiveFeedback() {
     this.showFeedbackModal = true;
   }
-
+  
   submitFeedback() {
     // TODO: Implement actual feedback logic
   }
-
+  
   closeFeedbackModal() {
     this.showFeedbackModal = false;
     this.feedbackComment = '';
   }
-
+  
   handleViewDetails() {
     this.viewDetails.emit(this.event.id);
   }
-
+  
+  getEventDate(): string {
+    // Try both property names
+    const startDate = this.event.date_start || this.event.dateStart;
+    
+    if (!startDate) return 'N/A';
+    
+    try {
+      const dateObj = new Date(startDate);
+      if (!isNaN(dateObj.getTime())) {
+        return this.datePipe.transform(dateObj, 'shortDate') || 'N/A';
+      }
+    } catch (error) {
+      console.error('Error formatting event date:', error);
+    }
+    
+    return 'N/A';
+  }
+  
   get eventStatusClass() {
     return {
       'bg-green-100 text-green-800': this.event.status === 'ACCEPTED',
