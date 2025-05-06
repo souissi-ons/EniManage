@@ -20,7 +20,7 @@ export class AuthService {
   private getHeaders(): HttpHeaders {
     const token = this.getToken();
     return new HttpHeaders({
-      'Authorization': `Bearer ${token}`
+      Authorization: `Bearer ${token}`,
     });
   }
 
@@ -43,15 +43,17 @@ export class AuthService {
 
   fetchCurrentUser(): Observable<any> {
     console.log('AuthService: Fetching current user...');
-    return this.http.get(`${this.apiUrl}/me`, { headers: this.getHeaders() }).pipe(
-      tap((user) => {
-        this.currentUserSubject.next(user);
-      }),
-      catchError((error) => {
-        console.error('AuthService: Error fetching current user:', error);
-        return throwError(() => error);
-      })
-    );
+    return this.http
+      .get(`${this.apiUrl}/me`, { headers: this.getHeaders() })
+      .pipe(
+        tap((user) => {
+          this.currentUserSubject.next(user);
+        }),
+        catchError((error) => {
+          console.error('AuthService: Error fetching current user:', error);
+          return throwError(() => error);
+        })
+      );
   }
 
   login(credentials: { email: string; password: string }): Observable<any> {
@@ -80,7 +82,11 @@ export class AuthService {
 
   private validateToken(token: string): Observable<boolean> {
     return this.http
-      .post<{ valid: boolean }>(`${this.apiUrl}/validate-token`, { token }, { headers: this.getHeaders() })
+      .post<{ valid: boolean }>(
+        `${this.apiUrl}/validate-token`,
+        { token },
+        { headers: this.getHeaders() }
+      )
       .pipe(
         map((response) => response.valid),
         catchError((error) => {
