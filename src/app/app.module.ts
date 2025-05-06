@@ -32,6 +32,7 @@ import { ProfileComponent } from './components/users/profile/profile.component';
 import { ClubMembersComponent } from './components/users/club-members/club-members.component';
 import { ClubEventCardComponent } from './components/events/club-event-card/club-event-card.component';
 import { EventsComponent } from './components/events/events/events.component';
+import { EventStatsComponent } from './components/events/event-stats/event-stats.component';
 
 function initializeApp(authService: AuthService) {
   return () => {
@@ -78,6 +79,7 @@ function initializeApp(authService: AuthService) {
     AdminEventManagementComponent,
     FeedbackComponent,
     ClubEventCardComponent,
+    EventStatsComponent,
   ],
   providers: [
     {

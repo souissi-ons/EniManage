@@ -1,0 +1,94 @@
+<div class="max-w-5xl mx-auto p-4 md:p-6 bg-white rounded-xl shadow-md">
+  <div class="mb-8 text-center">
+    <h2 class="text-3xl font-bold text-gray-800 mb-2">Event Statistics</h2>
+    <p class="text-teal-600">Detailed analytics for this event</p>
+  </div>
+
+  <div *ngIf="stats" class="space-y-10">
+    <!-- Summary Cards -->
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+      <div class="bg-gray-50 p-4 rounded-lg border border-gray-200">
+        <h3 class="text-gray-500 text-sm font-medium">Total Feedbacks</h3>
+        <p class="text-2xl font-bold text-teal-600">
+          {{ stats.totalFeedbacks }}
+        </p>
+      </div>
+      <div class="bg-gray-50 p-4 rounded-lg border border-gray-200">
+        <h3 class="text-gray-500 text-sm font-medium">Recommendation Rate</h3>
+        <p class="text-2xl font-bold text-teal-600">
+          {{
+            (stats.tauxRecommandation / stats.totalFeedbacks) * 100 || 0
+              | number : "1.0-0"
+          }}%
+        </p>
+      </div>
+      <div class="bg-gray-50 p-4 rounded-lg border border-gray-200">
+        <h3 class="text-gray-500 text-sm font-medium">Avg. Global Rating</h3>
+        <p class="text-2xl font-bold text-teal-600">
+          {{ stats.moyenneGlobale | number : "1.1-1" }}/5
+        </p>
+      </div>
+      <div class="bg-gray-50 p-4 rounded-lg border border-gray-200">
+        <h3 class="text-gray-500 text-sm font-medium">Avg. Atmosphere</h3>
+        <p class="text-2xl font-bold text-teal-600">
+          {{ stats.moyenneAmbiance | number : "1.1-1" }}/5
+        </p>
+      </div>
+    </div>
+
+    <!-- Rating Charts -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <!-- Global Rating Distribution -->
+      <div class="bg-white p-4 rounded-lg border border-gray-200">
+        <h3 class="text-lg font-semibold text-gray-800 mb-4">
+          Global Rating Distribution
+        </h3>
+        <div class="h-64 w-full">
+          <canvas
+            baseChart
+            [type]="'bar'"
+            [data]="globalRatingChartData"
+            [options]="barChartOptions"
+          >
+          </canvas>
+        </div>
+      </div>
+
+      <!-- Radar Chart for All Ratings -->
+      <div class="bg-white p-4 rounded-lg border border-gray-200">
+        <h3 class="text-lg font-semibold text-gray-800 mb-4">
+          Rating Categories Comparison
+        </h3>
+        <div class="h-64 w-full">
+          <canvas
+            baseChart
+            [type]="'radar'"
+            [data]="radarChartData"
+            [options]="radarChartOptions"
+          >
+          </canvas>
+        </div>
+      </div>
+    </div>
+
+    <!-- Recommendation Pie Chart -->
+    <div class="bg-white p-4 rounded-lg border border-gray-200">
+      <h3 class="text-lg font-semibold text-gray-800 mb-4">
+        Recommendation Rate
+      </h3>
+      <div class="h-64 w-full max-w-md mx-auto">
+        <canvas
+          baseChart
+          [type]="'doughnut'"
+          [data]="recommendationChartData"
+          [options]="doughnutChartOptions"
+        >
+        </canvas>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="!stats" class="text-center py-10">
+    <p class="text-gray-500">Loading statistics...</p>
+  </div>
+</div>
