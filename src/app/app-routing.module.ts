@@ -73,7 +73,7 @@ const routes: Routes = [
         data: { roles: ['STUDENT'] },
       },
       {
-        path: 'feedback',
+        path: 'events/:eventId/feedback',
         component: FeedbackComponent,
         canActivate: [RoleGuard],
         data: { roles: ['STUDENT'] },

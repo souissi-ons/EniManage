@@ -29,8 +29,8 @@ export interface Event {
 
   
   // Handle both naming conventions
-  date_start?: string | Date;
-  date_end?: string | Date;
+  dateStart?: string | Date;
+  dateEnd?: string | Date;
   
   
   // Handle both naming conventions for private flag

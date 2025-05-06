@@ -1,13 +1,17 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { PopupComponent } from '../../common/popup/popup.component';
+import { EventsService } from 'src/app/services/events.service';
+import { AuthService } from 'src/app/services/auth.service';
+import { Event } from 'src/app/models/event';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-event-card',
   templateUrl: './event-card.component.html',
   standalone: true,
-  imports: [CommonModule, FormsModule, PopupComponent],
+  imports: [CommonModule, FormsModule, PopupComponent, RouterLink],
   styleUrls: ['./event-card.component.css']
 })
 export class EventCardComponent implements OnInit {
@@ -16,8 +20,6 @@ export class EventCardComponent implements OnInit {
   @Output() viewDetails = new EventEmitter<number>();
   
   showConfirmModal = false;
-  showFeedbackModal = false;
-  feedbackComment = '';      
   currentUserId: number | null = null;
   loading = true;
   error = '';
@@ -36,16 +38,13 @@ export class EventCardComponent implements OnInit {
       next: (user: any | null) => {
         this.currentUserId = user?.id || null;
         if (this.currentUserId) {
-          console.log('User ID loaded:', this.currentUserId);
           this.loading = false;
         } else {
-          console.error('No user ID found');
           this.error = 'User not authenticated';
           this.loading = false;
         }
       },
       error: (error) => {
-        console.error('Error loading user:', error);
         this.error = 'Failed to load user information';
         this.loading = false;
       }
@@ -53,76 +52,49 @@ export class EventCardComponent implements OnInit {
   }
   
   getImageUrl(): string {
-    if (this.event.imageUrl) {
-      return this.eventsService.getEventImageUrl(this.event.imageUrl);
-    }
-    return 'assets/default-event.png';
+    return this.event.imageUrl 
+      ? this.eventsService.getEventImageUrl(this.event.imageUrl)
+      : 'assets/default-event.png';
   }
   
   handleAttendClick() {
-    if (!this.currentUserId) {
-      console.error('No user ID available for participation');
-      return;
-    }
-  
+    if (!this.currentUserId) return;
+
     this.eventsService.attendEvent(this.event.id, this.currentUserId).subscribe({
       next: () => {
         this.event.isParticipating = true;
         this.event.currentParticipants = (this.event.currentParticipants || 0) + 1;
         this.updateNeeded.emit();
-        console.log('Successfully added to participants');
       },
       error: (error: Error) => console.error('Error attending event:', error),
     });
   }
   
   getButtonState(): string {
-    const eventEndDate = this.event.date_end ? new Date(this.event.date_end) : null;
-    
-    if (!eventEndDate) {
-      console.warn('No valid end date found for event:', this.event);
-      return 'feedback';
-    }
-  
+    const eventEndDate = this.event.dateEnd ? new Date(this.event.dateEnd) : null;
+    if (!eventEndDate) return 'feedback';
+
     const now = new Date();
     now.setMinutes(now.getMinutes() - 1); // Buffer for edge cases
     return eventEndDate > now ? 'attend' : 'feedback';
   }
   
-  handleGiveFeedback() {
-    this.showFeedbackModal = true;
-  }
-  
-  submitFeedback() {
-    // TODO: Implement actual feedback logic
-    console.log('Submitting feedback:', this.feedbackComment);
-    // After submission is successful:
-    this.closeFeedbackModal();
-  }
-  
-  closeFeedbackModal() {
-    this.showFeedbackModal = false;
-    this.feedbackComment = '';
-  }
-  
   handleViewDetails() {
     this.viewDetails.emit(this.event.id);
   }
+
   handleButtonClick() {
-    const buttonState = this.getButtonState();
-    if (buttonState === 'attend') {
-            this.showConfirmModal = true;
-    } else if (buttonState === 'feedback') {
-      this.handleGiveFeedback();
+    if (this.getButtonState() === 'attend') {
+      this.showConfirmModal = true;
     }
   }
-  // Format date to a readable string
+
   formatDate(dateString: string | Date): string {
-      const date = new Date(dateString);
-      return date.toLocaleDateString('en-US', {
-        year: 'numeric',
-        month: 'short',
-        day: 'numeric'
-      });
-      }
+    const date = new Date(dateString);
+    return date.toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric'
+    });
+  }
 }
