@@ -22,7 +22,7 @@ export class AuthService {
       Authorization: `Bearer ${token}`,
     });
   }
-  
+
   private initializeAuth(): void {
     const token = localStorage.getItem('token');
     if (token) {
@@ -42,13 +42,6 @@ export class AuthService {
   private clearAuth(): void {
     localStorage.removeItem('token');
     this.currentUserSubject.next(null);
-  }
-
-  private getHeaders(): HttpHeaders {
-    const token = this.getToken();
-    return new HttpHeaders({
-      Authorization: `Bearer ${token}`,
-    });
   }
 
   fetchCurrentUser(): Observable<any> {
