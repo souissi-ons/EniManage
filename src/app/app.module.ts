@@ -10,7 +10,7 @@ import { AddUserComponent } from './components/users/add-user/add-user.component
 import { ConfirmationDialogComponent } from './components/common/confirmation-dialog/confirmation-dialog.component';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { EventCardComponent } from './components/events/event-card/event-card.component';
-import { EventsComponent } from './components/events/events/events.component';
+import { EventsClubComponent } from './components/events/Events-Club/events-club.component';
 import { UpdateUserComponent } from './components/users/update-user/update-user.component';
 import { ResourcesComponent } from './components/resources/resources/resources.component';
 import { AddResourceComponent } from './components/resources/add-resource/add-resource.component';
@@ -24,13 +24,14 @@ import { APP_INITIALIZER } from '@angular/core';
 import { AuthService } from './services/auth.service';
 import { AdminEventCardComponent } from './components/events/admin-event-card/admin-event-card.component';
 import { AdminEventManagementComponent } from './components/events/admin-event-management/admin-event-management.component';
-import { firstValueFrom } from 'rxjs';
 import { RequestEventComponent } from './components/events/request-event/request-event.component';
 import { ReactiveFormsModule } from '@angular/forms';
-import { ChatComponent } from './components/chat/chat/chat.component';
 import { CorsInterceptor } from './interceptors/cors.interceptor';
+import { FeedbackComponent } from './components/events/feedback/feedback.component';
 import { ProfileComponent } from './components/users/profile/profile.component';
 import { ClubMembersComponent } from './components/users/club-members/club-members.component';
+import { ClubEventCardComponent } from './components/events/club-event-card/club-event-card.component';
+import { EventsComponent } from './components/events/events/events.component';
 
 function initializeApp(authService: AuthService) {
   return () => {
@@ -50,7 +51,7 @@ function initializeApp(authService: AuthService) {
 }
 
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [AppComponent, EventsComponent],
   imports: [
     RequestEventComponent,
     BrowserModule,
@@ -65,7 +66,7 @@ function initializeApp(authService: AuthService) {
     UpdateUserComponent,
     ConfirmationDialogComponent,
     EventCardComponent,
-    EventsComponent,
+    EventsClubComponent,
     ResourcesComponent,
     AddResourceComponent,
     EditResourceComponent,
@@ -75,6 +76,8 @@ function initializeApp(authService: AuthService) {
     ReactiveFormsModule,
     AdminEventCardComponent,
     AdminEventManagementComponent,
+    FeedbackComponent,
+    ClubEventCardComponent,
   ],
   providers: [
     {

@@ -20,7 +20,7 @@ export class AuthService {
   private getHeaders(): HttpHeaders {
     const token = this.getToken();
     return new HttpHeaders({
-      'Authorization': `Bearer ${token}`
+      Authorization: `Bearer ${token}`,
     });
   }
 
@@ -28,45 +28,46 @@ export class AuthService {
     console.log('AuthService: Initializing authentication...');
     const token = localStorage.getItem('token');
     if (token) {
-      this.validateToken(token).subscribe({
-        next: (isValid) => {
-          if (isValid) {
-            this.fetchCurrentUser().subscribe();
-          }
-        },
-        error: (err) => {
-          console.error('AuthService: Error loading user data:', err);
-        },
-      });
+      this.fetchCurrentUser().subscribe();
+      // this.validateToken(token).subscribe({
+      //   next: (isValid) => {
+      //     if (isValid) {
+      //
+      //     }
     }
+    //   error: (err) => {
+    //     console.error('AuthService: Error loading user data:', err);
+    //   },
+    // });
   }
 
   fetchCurrentUser(): Observable<any> {
     console.log('AuthService: Fetching current user...');
-    return this.http.get(`${this.apiUrl}/me`, { headers: this.getHeaders() }).pipe(
-      tap((user) => {
-        this.currentUserSubject.next(user);
-      }),
-      catchError((error) => {
-        console.error('AuthService: Error fetching current user:', error);
-        return throwError(() => error);
-      })
-    );
+    return this.http
+      .get(`${this.apiUrl}/me`, { headers: this.getHeaders() })
+      .pipe(
+        tap((user) => {
+          this.currentUserSubject.next(user);
+        }),
+        catchError((error) => {
+          console.error('AuthService: Error fetching current user:', error);
+          return throwError(() => error);
+        })
+      );
   }
 
+  // auth.service.ts
   login(credentials: { email: string; password: string }): Observable<any> {
     return this.http.post(`${this.apiUrl}/login`, credentials).pipe(
-      map((response: any) => {
-        if (response && response.token) {
+      tap((response: any) => {
+        if (response?.token) {
           localStorage.setItem('token', response.token);
-          console.log('AuthService: Token retrieved:', response.token);
-          this.router.navigate(['/users']); // Navigate to /users after login
-          return response;
+          this.fetchCurrentUser().subscribe(() => {
+            this.router.navigate(['/profiles']);
+          });
         }
-        return null;
       }),
       catchError((error) => {
-        console.error('AuthService: Login error:', error);
         return throwError(() => error);
       })
     );
@@ -80,7 +81,11 @@ export class AuthService {
 
   private validateToken(token: string): Observable<boolean> {
     return this.http
-      .post<{ valid: boolean }>(`${this.apiUrl}/validate-token`, { token }, { headers: this.getHeaders() })
+      .post<{ valid: boolean }>(
+        `${this.apiUrl}/validate-token`,
+        { token },
+        { headers: this.getHeaders() }
+      )
       .pipe(
         map((response) => response.valid),
         catchError((error) => {

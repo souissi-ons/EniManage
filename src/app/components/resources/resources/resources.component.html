@@ -1,81 +1,63 @@
-<div class="container mx-auto">
-  <img
-    src="assets/bg.png"
-    alt="background image"
-    class="w-full h-16 object-cover mb-6"
-  />
-  <div class="px-4 text-2xl font-bold text-gray-800">Resources</div>
-</div>
-<div class="bg-white py-4 md:py-7 px-4 md:px-8 xl:px-10">
-  <div class="flex justify-end">
+
+<div class="bg-white py-6 px-4 sm:px-6 lg:px-8">
+  <div class="flex flex-col sm:flex-row justify-end items-center mb-6 gap-4">
     <button
       (click)="openAddResourcePopup()"
-      class="focus:ring-2 focus:ring-offset-2 focus:ring-teal-dark mt-4 sm:mt-0 inline-flex items-start justify-start px-6 py-3 bg-teal-light hover:bg-teal-dark focus:outline-none rounded"
+      class="flex items-center gap-2 px-5 py-2.5 bg-teal-600 hover:bg-teal-700 text-white text-sm font-medium rounded-lg transition-all shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500"
     >
-      <p class="text-sm font-medium leading-none text-white">Add Resource</p>
-    </button>
+    <i class="fa-solid fa-toolbox text-base"></i>
+  Add Resource
+  </button>
   </div>
-  <div class="p-6 px-0">
-    <table class="mt-4 w-full min-w-max table-auto text-center">
-      <thead>
+  <div class="overflow-x-auto shadow ring-1 ring-gray-200 sm:rounded-lg">
+    <table class="min-w-full divide-y divide-gray-200 text-sm text-gray-700">
+      <thead class="bg-gray-50 text-xs uppercase font-semibold text-gray-600">
         <tr>
           <th
-            class="cursor-pointer border-y border-blue-gray-100 bg-blue-gray-50/50 p-4 transition-colors hover:bg-blue-gray-50"
-          >
+          class="px-4 py-3 text-left"          >
             Name
           </th>
           <th
-            class="cursor-pointer border-y border-blue-gray-100 bg-blue-gray-50/50 p-4 transition-colors hover:bg-blue-gray-50"
-          >
+          class="px-4 py-3 text-left"          >
             description
           </th>
           <th
-            class="cursor-pointer border-y border-blue-gray-100 bg-blue-gray-50/50 p-4 transition-colors hover:bg-blue-gray-50"
-          >
+          class="px-4 py-3 text-left"          >
             quantity
           </th>
           <th
-            class="cursor-pointer border-y border-blue-gray-100 bg-blue-gray-50/50 p-4 transition-colors hover:bg-blue-gray-50"
-          >
+          class="px-4 py-3 text-center"          >
             Actions
           </th>
         </tr>
       </thead>
-      <tbody>
-        <tr *ngFor="let resource of resources">
-          <td class="p-4 border-b border-blue-gray-50">
+      <tbody class="divide-y divide-gray-100 bg-white">
+        <tr *ngFor="let resource of resources" class="hover:bg-gray-50">
+          <td class="px-4 py-3">
             {{ resource.name }}
           </td>
-          <td class="p-4 border-b border-blue-gray-50">
+          <td class="px-4 py-3">
             {{ resource.description }}
           </td>
-          <td class="p-4 border-b border-blue-gray-50">
+          <td class="px-4 py-3">
             {{ resource.quantity }}
           </td>
 
-          <td class="p-4 border-b border-blue-gray-50">
+          <td class="px-4 py-3 text-center">
             <button
-              class="relative align-middle select-none font-sans font-medium text-center uppercase transition-all disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none w-20 h-20 rounded-lg text-xs text-blue-gray-500 hover:bg-blue-gray-500/10 active:bg-blue-gray-500/30"
-              type="button"
-              (click)="openEditResourcePopup(resource)"
-            >
-              <span
-                class="absolute top-1/2 left-1/2 transform -translate-y-1/2 -translate-x-1/2"
+                (click)="openEditResourcePopup(resource)"
+                class="p-2 rounded-full hover:bg-teal-100 text-teal-700 transition"
+                aria-label="Edit Resource"
               >
-                <i class="fa-solid fa-pen-to-square text-xl text-teal-dark"></i>
-              </span>
-            </button>
-            <button
-              class="relative align-middle select-none font-sans font-medium text-center uppercase transition-all disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none w-20 h-20 rounded-lg text-xs text-blue-gray-500 hover:bg-blue-gray-500/10 active:bg-blue-gray-500/30"
-              type="button"
-              (click)="openDeleteResourcePopup(resource)"
-            >
-              <span
-                class="absolute top-1/2 left-1/2 transform -translate-y-1/2 -translate-x-1/2"
+                <i class="fa-solid fa-pen-to-square"></i>
+              </button>
+              <button
+              class="p-2 rounded-full hover:bg-red-100 text-red-600 transition"
+                (click)="openDeleteResourcePopup(resource)"
               >
-                <i class="fa-solid fa-trash text-xl text-teal-dark"></i>
-              </span>
-            </button>
+              <i class="fa-solid fa-trash"></i>
+  
+              </button>
           </td>
         </tr>
       </tbody>

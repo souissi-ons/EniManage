@@ -41,7 +41,7 @@ export class EventsService {
   attendEvent(eventId: number, userId: number): Observable<any> {
     return this.http.post(`${this.apiUrl}/${eventId}/attend/${userId}`, {}, { headers: this.getHeaders() });
   }
-  
+
   getEventById(id: number): Observable<Event> {
     return this.http.get<Event>(`${this.apiUrl}/${id}`).pipe(
       map(event => this.ensureCorrectDateFormat([event])[0]),
@@ -89,21 +89,11 @@ export class EventsService {
     });
   }
 
-  addFeedback(
-    eventId: number,
-    userId: number,
-    comment: string
-  ): Observable<Feedback> {
-    return this.http.post<Feedback>(`${this.apiUrl}/feedback`, {
-      eventId,
-      userId,
-      comment,
-    }, { headers: this.getHeaders() });
-  }
 
   getEventFeedbacks(eventId: number): Observable<Feedback[]> {
     return this.http.get<Feedback[]>(`${this.apiUrl}/${eventId}/feedbacks`, { headers: this.getHeaders() });
   }
+
 
   getEventParticipants(eventId: number): Observable<Participant[]> {
     return this.http.get<Participant[]>(
@@ -208,4 +198,18 @@ export class EventsService {
       })
     );
   }
+
+
+  addFeedback(feedbackData: any): Observable<Feedback> {
+    return this.http.post<Feedback>(`${this.apiUrl}/feedback`, feedbackData, {
+      headers: this.getHeaders(),
+    });
+  }
+
+  getEventStats(eventId: number): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/${eventId}/stats`, {
+      headers: this.getHeaders(),
+    });
+  }
 }
+
