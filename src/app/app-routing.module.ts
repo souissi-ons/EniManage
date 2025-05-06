@@ -12,6 +12,7 @@ import { ChatComponent } from './components/chat/chat/chat.component';
 import { ProfileComponent } from './components/users/profile/profile.component';
 import { ClubMembersComponent } from './components/users/club-members/club-members.component';
 import { RoleGuard } from './guards/role.guard';
+import { EventsComponent } from './components/events/events/events.component';
 
 const routes: Routes = [
   { path: 'login', component: LoginComponent },
@@ -63,7 +64,7 @@ const routes: Routes = [
       },
       {
         path: 'events',
-        component: EventsClubComponent,
+        component: EventsComponent,
         canActivate: [RoleGuard],
         data: { roles: ['STUDENT'] }
       },
