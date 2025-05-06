@@ -25,23 +25,20 @@ export class AuthService {
   }
 
   private initializeAuth(): void {
+    console.log('AuthService: Initializing authentication...');
     const token = localStorage.getItem('token');
     if (token) {
-      this.validateToken(token).subscribe({
-        next: (isValid) => {
-          if (isValid) {
-            this.fetchCurrentUser().subscribe();
-          } else {
-            this.clearAuth();
-          }
-        },
-        error: () => this.clearAuth(),
-      });
+      this.fetchCurrentUser().subscribe();
+      // this.validateToken(token).subscribe({
+      //   next: (isValid) => {
+      //     if (isValid) {
+      //
+      //     }
     }
-  }
-  private clearAuth(): void {
-    localStorage.removeItem('token');
-    this.currentUserSubject.next(null);
+    //   error: (err) => {
+    //     console.error('AuthService: Error loading user data:', err);
+    //   },
+    // });
   }
 
   fetchCurrentUser(): Observable<any> {
@@ -66,19 +63,19 @@ export class AuthService {
         if (response?.token) {
           localStorage.setItem('token', response.token);
           this.fetchCurrentUser().subscribe(() => {
-            this.router.navigate(['/profile']);
+            this.router.navigate(['/profiles']);
           });
         }
       }),
       catchError((error) => {
-        this.clearAuth();
         return throwError(() => error);
       })
     );
   }
 
   logout(): void {
-    this.clearAuth();
+    localStorage.removeItem('token');
+    this.currentUserSubject.next(null);
     this.router.navigate(['/login']); // Navigate to /login after logout
   }
 

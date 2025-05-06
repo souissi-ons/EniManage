@@ -1,9 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { map, Observable, of, take, tap } from 'rxjs';
+import { Observable, of, tap } from 'rxjs';
 import { AuthService } from '../services/auth.service';
 
-// auth.guard.ts
 @Injectable({
   providedIn: 'root',
 })
@@ -11,16 +10,18 @@ export class AuthGuard {
   constructor(private authService: AuthService, private router: Router) {}
 
   canActivate(): Observable<boolean> {
-    return this.authService.currentUser$.pipe(
-      map((user) => {
-        if (user) {
-          return true;
-        } else {
-          this.router.navigate(['/login']);
-          return false;
-        }
-      }),
-      take(1) // Ensure the observable completes
-    );
+    const token = this.authService.getToken();
+
+    // Si le token existe déjà, autoriser l'accès immédiatement
+    // tout en validant le token en arrière-plan
+    if (token) {
+      // Valider le token mais ne pas bloquer la navigation
+      // this.authService.validateToken().subscribe();
+      return of(true);
+    }
+
+    // Si pas de token, bloquer et rediriger
+    this.router.navigate(['/login']);
+    return of(false);
   }
 }
