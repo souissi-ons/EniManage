@@ -43,14 +43,14 @@ export class EventsService {
   private processEventDates(event: Event): Event {
     console.log('Processing event dates:', {
       eventId: event.id,
-      date_start: event.date_start,
+      date_start: event.dateStart,
     });
 
     // Ensure we have a valid date in date_start
-    if (event.date_start) {
-      const date = new Date(event.date_start);
+    if (event.dateStart) {
+      const date = new Date(event.dateStart);
       if (!isNaN(date.getTime())) {
-        event.date_start = date.toISOString();
+        event.dateStart = date.toISOString();
       }
     }
 
@@ -59,7 +59,7 @@ export class EventsService {
 
     console.log('Processed event dates:', {
       eventId: event.id,
-      date_start: event.date_start
+      date_start: event.dateStart
     });
 
     return event;
@@ -88,18 +88,10 @@ export class EventsService {
     return events.map(event => {
       const normalizedEvent = { ...event };
       
-      if (normalizedEvent.dateStart && !normalizedEvent.date_start) {
-        normalizedEvent.date_start = normalizedEvent.dateStart;
-      } else if (normalizedEvent.date_start && !normalizedEvent.dateStart) {
-        normalizedEvent.dateStart = normalizedEvent.date_start;
-      }
       
-      if (normalizedEvent.dateEnd && !normalizedEvent.date_end) {
-        normalizedEvent.date_end = normalizedEvent.dateEnd;
-      } else if (normalizedEvent.date_end && !normalizedEvent.dateEnd) {
-        normalizedEvent.dateEnd = normalizedEvent.date_end; 
-      }
       
+      
+     
       if (normalizedEvent.private !== undefined && normalizedEvent.is_private === undefined) {
         normalizedEvent.is_private = normalizedEvent.private;
       }
@@ -227,8 +219,8 @@ export class EventsService {
   }
 
 
-  addFeedback(feedbackData: any): Observable<Feedback> {
-    return this.http.post<Feedback>(`${this.apiUrl}/feedback`, feedbackData, {
+  addFeedback(eventId: number,feedbackData: any): Observable<Feedback> {
+    return this.http.post<Feedback>(`${this.apiUrl}/${eventId}/feedback`, feedbackData, {
       headers: this.getHeaders(),
     });
   }

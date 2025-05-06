@@ -60,9 +60,10 @@ export class AdminEventManagementComponent implements OnInit {
   }
 
   formatDate(date: any): string {
+    console.log('Formatting date:', date);
     if (!date) return 'N/A';
     
-    if (typeof date === 'string' && date.includes('T')) {
+    if (typeof (date) === 'string' && date.includes('T')) {
       try {
         const dateObj = new Date(date);
         if (!isNaN(dateObj.getTime())) {
@@ -85,10 +86,9 @@ export class AdminEventManagementComponent implements OnInit {
       next: (event) => {
         this.selectedEvent = {
           ...event,
-          date_start: event.date_start || event.dateStart,
-          date_end: event.date_end || event.dateEnd,
-          dateStart: event.dateStart || event.date_start,
-          dateEnd: event.dateEnd || event.date_end
+          dateStart: event.dateStart ,
+          dateEnd: event.dateEnd ,
+          
         };
         this.showDetailsModal = true;
       },

@@ -8,6 +8,7 @@ import { Users } from 'src/app/models/users';
 import { UsersService } from 'src/app/services/users.service';
 import { Salle } from 'src/app/models/salle';
 import { finalize } from 'rxjs/operators';
+import { format, parseISO, isValid } from 'date-fns';
 
 @Component({
   selector: 'app-admin-event-card',
@@ -110,31 +111,26 @@ export class AdminEventCardComponent {
 
   formatDate(date: any): string {
     if (!date) return 'N/A';
-    
+  
     try {
-      // Handle ISO string dates
-      if (typeof date === 'string' && date.includes('T')) {
-        const dateObj = new Date(date);
-        if (!isNaN(dateObj.getTime())) {
-          return this.datePipe.transform(dateObj, 'MMM d, y, h:mm a') || 'N/A';
-        }
+      let parsedDate: Date;
+  
+      if (typeof date === 'string') {
+        // Try parsing ISO format first
+        parsedDate = parseISO(date);
+        // If invalid, try regular Date constructor
+        if (!isValid(parsedDate)) parsedDate = new Date(date);
+      } else {
+        parsedDate = date instanceof Date ? date : new Date(date);
       }
-      
-      // Handle Date objects
-      if (date instanceof Date) {
-        return this.datePipe.transform(date, 'MMM d, y, h:mm a') || 'N/A';
-      }
-      
-      // Last attempt with regular Date constructor
-      const dateObj = new Date(date);
-      if (!isNaN(dateObj.getTime())) {
-        return this.datePipe.transform(dateObj, 'MMM d, y, h:mm a') || 'N/A';
-      }
+  
+      return isValid(parsedDate) 
+        ? format(parsedDate, 'MMM d, y, h:mm a')
+        : 'Invalid date';
     } catch (error) {
       console.error('Error formatting date:', error);
+      return 'Invalid date';
     }
-    
-    return 'Invalid date';
   }
 
   getParticipationPercentage(): number {

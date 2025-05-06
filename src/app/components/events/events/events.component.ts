@@ -93,12 +93,12 @@ export class EventsComponent implements OnInit {
     switch(this.sortBy) {
       case 'date_asc':
         filtered.sort((a, b) => 
-          new Date(a.date_start || 0).getTime() - new Date(b.date_start || 0).getTime()
+          new Date(a.dateStart || 0).getTime() - new Date(b.dateStart || 0).getTime()
         );
         break;
       case 'date_desc':
         filtered.sort((a, b) => 
-          new Date(b.date_start || 0).getTime() - new Date(a.date_start || 0).getTime()
+          new Date(b.dateStart || 0).getTime() - new Date(a.dateStart || 0).getTime()
         );
         break;
       case 'popularity':
