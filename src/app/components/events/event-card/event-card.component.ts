@@ -1,9 +1,6 @@
-import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Event } from 'src/app/models/event';
-import { EventsService } from 'src/app/services/events.service';
-import { AuthService } from 'src/app/services/auth.service';
 import { PopupComponent } from '../../common/popup/popup.component';
 
 @Component({

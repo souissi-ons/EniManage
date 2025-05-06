@@ -13,7 +13,6 @@ import { ProfileComponent } from './components/users/profile/profile.component';
 import { ClubMembersComponent } from './components/users/club-members/club-members.component';
 import { FeedbackComponent } from './components/events/feedback/feedback.component';
 import { RoleGuard } from './guards/role.guard';
-import { NoAuthGuard } from './guards/noAuth.guard';
 import { EventsComponent } from './components/events/events/events.component';
 
 const routes: Routes = [
