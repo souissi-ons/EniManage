@@ -14,6 +14,7 @@ import { ClubMembersComponent } from './components/users/club-members/club-membe
 import { FeedbackComponent } from './components/events/feedback/feedback.component';
 import { RoleGuard } from './guards/role.guard';
 import { EventsComponent } from './components/events/events/events.component';
+import { EventStatsComponent } from './components/events/event-stats/event-stats.component';
 
 const routes: Routes = [
   {
@@ -63,6 +64,12 @@ const routes: Routes = [
       {
         path: 'membership',
         component: ClubMembersComponent,
+        canActivate: [RoleGuard],
+        data: { roles: ['CLUB'] },
+      },
+      {
+        path: 'event-status',
+        component: EventStatsComponent,
         canActivate: [RoleGuard],
         data: { roles: ['CLUB'] },
       },
