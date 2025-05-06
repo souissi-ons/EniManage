@@ -12,12 +12,15 @@ import { PopupComponent } from '../../common/popup/popup.component';
   standalone: true,
   imports: [CommonModule, FormsModule, PopupComponent],
   styleUrls: ['./event-card.component.css']
-
 })
 export class EventCardComponent implements OnInit {
   @Input() event!: Event;
   @Output() updateNeeded = new EventEmitter<void>();
+  @Output() viewDetails = new EventEmitter<number>(); // 🛠️ Declare properly
+
   showConfirmModal = false;
+  showFeedbackModal = false; // 🛠️ Fix: Declare missing property
+  feedbackComment = '';      // 🛠️ Fix: Declare missing property
 
   currentUserId: number | null = null;
   loading = true;
@@ -27,7 +30,6 @@ export class EventCardComponent implements OnInit {
     private eventsService: EventsService,
     private authService: AuthService
   ) {}
-
 
   ngOnInit() {
     this.loadCurrentUser();
@@ -63,8 +65,6 @@ export class EventCardComponent implements OnInit {
   }
 
   handleAttendClick() {
-    const eventDate = this.event.date_end ? new Date(this.event.date_end) : new Date();
-
     if (!this.currentUserId) {
       console.error('No user ID available for participation');
       return;
@@ -88,11 +88,15 @@ export class EventCardComponent implements OnInit {
       return 'feedback';
     }
     return this.event.isParticipating ? 'attending' : 'attend';
+  }
+
   handleGiveFeedback() {
     this.showFeedbackModal = true;
   }
 
-  submitFeedback() {}
+  submitFeedback() {
+    // TODO: Implement actual feedback logic
+  }
 
   closeFeedbackModal() {
     this.showFeedbackModal = false;

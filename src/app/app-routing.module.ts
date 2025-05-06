@@ -69,8 +69,11 @@ const routes: Routes = [
         canActivate: [RoleGuard],
         data: { roles: ['STUDENT'] }
       },
-            { path: 'feedback', component: FeedbackComponent, canActivate: [RoleGuard],
-        data: { roles: ['STUDENT'] },
+      { path: 'feedback',
+        component: FeedbackComponent,
+        canActivate: [RoleGuard],
+        data: { roles: ['STUDENT'] }
+      },
 
       {
         path: 'chat',
