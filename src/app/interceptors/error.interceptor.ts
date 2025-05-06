@@ -9,12 +9,11 @@ import {
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { Router } from '@angular/router';
-import { AuthService } from '../services/auth.service';
 
-// error.interceptor.ts
 @Injectable()
 export class ErrorInterceptor implements HttpInterceptor {
-  constructor(private router: Router, private authService: AuthService) {}
+  // Remove AuthService injection from constructor
+  constructor(private router: Router) {}
 
   intercept(
     request: HttpRequest<unknown>,
@@ -23,7 +22,8 @@ export class ErrorInterceptor implements HttpInterceptor {
     return next.handle(request).pipe(
       catchError((error: HttpErrorResponse) => {
         if (error.status === 401) {
-          this.authService.logout();
+          // Instead of using AuthService, use localStorage directly
+          localStorage.removeItem('token');
           this.router.navigate(['/login']);
         }
         return throwError(() => error);
