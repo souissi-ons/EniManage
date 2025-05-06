@@ -68,7 +68,7 @@ const routes: Routes = [
         data: { roles: ['CLUB'] },
       },
       {
-        path: 'event-status',
+        path: 'event/:eventId/status',
         component: EventStatsComponent,
         canActivate: [RoleGuard],
         data: { roles: ['CLUB'] },

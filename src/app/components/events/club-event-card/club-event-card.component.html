@@ -1,4 +1,8 @@
-<div class="w-full max-w-sm h-96 rounded-2xl shadow-lg overflow-hidden bg-white hover:shadow-xl transition duration-300 flex flex-col">
+<div class="w-full max-w-sm h-96 rounded-2xl shadow-lg overflow-hidden bg-white hover:shadow-xl transition duration-300 flex flex-col"
+[class.cursor-pointer]="isEventDone()"
+[class.opacity-75]="isEventDone()"
+  [class.hover:shadow-lg]="!isEventDone()"
+(click)="handleCardClick()">
     <img
       class="h-40 w-full object-cover"
       [src]="getImageUrl()"
@@ -21,9 +25,8 @@
           {{ event.status }}
         </span>
         <button
-          (click)="handleViewDetails()"
-          class="ml-2 bg-teal-400 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-teal-500 transition-colors"
-        >
+          (click)="handleViewDetails($event)"
+          class="ml-2 bg-teal-400 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-teal-500 transition-colors"        >
           Details
         </button>
       </div>

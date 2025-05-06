@@ -1,25 +1,21 @@
-<div class="min-h-screen grid grid-cols-1 sm:grid-cols-2 relative">
-  <!-- Logo -->
-  <div class="absolute top-4 left-4 sm:left-6 z-10">
-    <img class="w-28 sm:w-32" src="assets/logo.png" alt="Logo" />
+<div class="h-screen w-full flex flex-col sm:flex-row overflow-hidden">
+  <!-- Logo (Fixed Position) -->
+  <div class="absolute top-6 left-6 z-20">
+    <img class="w-32 sm:w-36" src="assets/logo.png" alt="Logo" />
   </div>
 
   <!-- Form Section -->
-  <div class="flex items-center justify-center px-6 py-12 sm:px-12 lg:px-16 bg-white">
-    <div class="w-full max-w-md space-y-6">
-      <div>
-        <h1 class="text-center text-3xl font-extrabold text-teal-light">
-          Welcome
-        </h1>
-        <p class="mt-2 text-center text-sm text-gray-600">
-          Enter your email and password to sign in.
-        </p>
+  <div class="flex-1 flex items-center justify-center p-6 sm:p-12 bg-white overflow-y-auto">
+    <div class="w-full max-w-md space-y-8">
+      <div class="text-center">
+        <h1 class="text-4xl font-bold text-teal-600 mb-2">Welcome Back</h1>
+        <p class="text-gray-500">Sign in to access your account</p>
       </div>
 
-      <form class="space-y-6" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-        <!-- Email -->
-        <div>
-          <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
+      <form class="mt-8 space-y-6" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+        <!-- Email Field -->
+        <div class="space-y-2">
+          <label for="email" class="block text-sm font-medium text-gray-700">Email Address</label>
           <input
             id="email"
             name="email"
@@ -27,21 +23,22 @@
             formControlName="email"
             autocomplete="email"
             required
-            class="mt-1 w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-[#4FD1C5] focus:border-[#4FD1C5] sm:text-sm"
-            [class.border-red-300]="loginForm.get('email')?.invalid && (loginForm.get('email')?.dirty || loginForm.get('email')?.touched)"
+            class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition-all duration-200 focus:outline-none"
+            [class.border-red-500]="loginForm.get('email')?.invalid && (loginForm.get('email')?.dirty || loginForm.get('email')?.touched)"
+            placeholder="you@example.com"
           />
-          <div
-            *ngIf="loginForm.get('email')?.invalid && (loginForm.get('email')?.dirty || loginForm.get('email')?.touched)"
-            class="mt-1 text-sm text-red-600"
-          >
-            <div *ngIf="loginForm.get('email')?.hasError('required')">Email is required.</div>
-            <div *ngIf="loginForm.get('email')?.hasError('email')">Invalid email format.</div>
+          <div *ngIf="loginForm.get('email')?.invalid && (loginForm.get('email')?.dirty || loginForm.get('email')?.touched)" 
+               class="text-red-600 text-sm">
+            <span *ngIf="loginForm.get('email')?.hasError('required')">Email is required</span>
+            <span *ngIf="loginForm.get('email')?.hasError('email')">Please enter a valid email</span>
           </div>
         </div>
 
-        <!-- Password -->
-        <div>
-          <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
+        <!-- Password Field -->
+        <div class="space-y-2">
+          <div class="flex justify-between items-center">
+            <label for="password" class="block text-sm font-medium text-gray-700">Password</label>
+          </div>
           <input
             id="password"
             name="password"
@@ -49,47 +46,44 @@
             formControlName="password"
             autocomplete="current-password"
             required
-            class="mt-1 w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-[#4FD1C5] focus:border-[#4FD1C5] sm:text-sm"
-            [class.border-red-300]="loginForm.get('password')?.invalid && (loginForm.get('password')?.dirty || loginForm.get('password')?.touched)"
+            class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-teal-500 focus:border-teal-500 transition-all duration-200 focus:outline-none"
+            [class.border-red-500]="loginForm.get('password')?.invalid && (loginForm.get('password')?.dirty || loginForm.get('password')?.touched)"
+            placeholder="••••••••"
           />
-          <div
-            *ngIf="loginForm.get('password')?.invalid && (loginForm.get('password')?.dirty || loginForm.get('password')?.touched)"
-            class="mt-1 text-sm text-red-600"
-          >
-            <div *ngIf="loginForm.get('password')?.hasError('required')">Password is required.</div>
+          <div *ngIf="loginForm.get('password')?.invalid && (loginForm.get('password')?.dirty || loginForm.get('password')?.touched)" 
+               class="text-red-600 text-sm">
+            <span *ngIf="loginForm.get('password')?.hasError('required')">Password is required</span>
           </div>
         </div>
 
-        <!-- Submit -->
-        <div>
-          <button
-            type="submit"
-            class="w-full flex justify-center py-2 px-4 rounded-md shadow-sm text-sm font-medium text-white transition-all duration-150"
-            [class.bg-teal]="!loginForm.invalid"
-            [class.hover:bg-teal-light]="!loginForm.invalid"
-            [class.focus:ring-teal-light]="!loginForm.invalid"
-            [class.bg-teal-dark]="loginForm.invalid"
-            [class.cursor-not-allowed]="loginForm.invalid"
-            [disabled]="loginForm.invalid"
-          >
-            Sign in
-          </button>
-        </div>
+        <!-- Submit Button -->
+        <button
+          type="submit"
+          class="w-full py-3 px-4 bg-teal-600 hover:bg-teal-700 focus:ring-teal-500 focus:ring-offset-2 text-white font-medium rounded-lg transition-all duration-200 focus:outline-none focus:ring-2 disabled:opacity-50 disabled:cursor-not-allowed"
+          [disabled]="loginForm.invalid"
+        >
+          Sign In
+        </button>
 
         <!-- Error Message -->
-        <div *ngIf="errorMessage" class="mt-2 text-center text-sm text-red-600">
+        <div *ngIf="errorMessage" class="p-3 bg-red-50 text-red-600 rounded-lg text-sm text-center">
           {{ errorMessage }}
         </div>
       </form>
+
+      <!-- Footer Links -->
+      
     </div>
   </div>
 
   <!-- Image Section -->
-  <div class="hidden sm:block">
+  <div class="hidden sm:block flex-1 relative overflow-hidden">
+    <div class="absolute inset-0 bg-gradient-to-r from-teal-500/10 to-teal-600/20 z-10"></div>
     <img
-      class="w-full h-full object-cover"
+      class="w-full h-full object-cover object-center"
       src="assets/bg.png"
-      alt="Login Background"
+      alt="Background"
     />
+    
   </div>
 </div>
