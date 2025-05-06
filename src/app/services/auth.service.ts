@@ -23,7 +23,7 @@ export class AuthService {
       Authorization: `Bearer ${token}`,
     });
   }
-
+  
   private initializeAuth(): void {
     console.log('AuthService: Initializing authentication...');
     const token = localStorage.getItem('token');
