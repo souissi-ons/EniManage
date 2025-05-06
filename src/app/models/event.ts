@@ -26,12 +26,12 @@ export interface Event {
   id: number;
   title: string;
   description: string;
+
   
   // Handle both naming conventions
   date_start?: string | Date;
   date_end?: string | Date;
-  dateStart?: string | Date;
-  dateEnd?: string | Date;
+  
   
   // Handle both naming conventions for private flag
   is_private?: boolean;

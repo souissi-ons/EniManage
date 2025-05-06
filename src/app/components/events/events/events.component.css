@@ -1,0 +1,30 @@
+.container {
+    transition: all 0.3s ease;
+  }
+  
+  /* Animation for adding new events */
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  app-event-card {
+    display: block;
+    animation: fadeIn 0.4s ease-out;
+    transition: transform 0.3s ease;
+  }
+  
+  app-event-card:hover {
+    transform: translateY(-5px);
+  }
+  
+  /* Style pagination "..." entries */
+  button:disabled {
+    cursor: not-allowed;
+  }

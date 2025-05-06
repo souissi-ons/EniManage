@@ -90,18 +90,20 @@
             <p class="whitespace-pre-line text-gray-700">{{ selectedEvent.description }}</p>
           </div>
           
+
           <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
             <div class="p-4 bg-gray-50 rounded-lg">
               <h4 class="text-sm font-semibold text-gray-500 mb-2">Start Date</h4>
               <p class="text-gray-800">
-                {{ formatDate(selectedEvent.date_start || selectedEvent.dateStart) }}
+                {{ formatDate(selectedEvent.date_start) }}
               </p>
             </div>
             
             <div class="p-4 bg-gray-50 rounded-lg">
               <h4 class="text-sm font-semibold text-gray-500 mb-2">End Date</h4>
               <p class="text-gray-800">
-                {{ formatDate(selectedEvent.date_end || selectedEvent.dateEnd) }}
+                {{ formatDate(selectedEvent.date_end ) }}
+
               </p>
             </div>
           </div>

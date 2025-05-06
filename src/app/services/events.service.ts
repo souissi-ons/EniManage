@@ -26,6 +26,7 @@ export class EventsService {
 
   getEvents(): Observable<Event[]> {
     console.log('EventsService: Fetching events...');
+
     return this.http.get<Event[]>(this.apiUrl, { headers: this.getHeaders() }).pipe(
       map(events => this.ensureCorrectDateFormat(events)),
       tap(response => {
@@ -36,6 +37,32 @@ export class EventsService {
         throw error;
       })
     );
+
+  }
+
+  private processEventDates(event: Event): Event {
+    console.log('Processing event dates:', {
+      eventId: event.id,
+      date_start: event.date_start,
+    });
+
+    // Ensure we have a valid date in date_start
+    if (event.date_start) {
+      const date = new Date(event.date_start);
+      if (!isNaN(date.getTime())) {
+        event.date_start = date.toISOString();
+      }
+    }
+
+    // If date_start is not valid but startDate is, use startDate
+    
+
+    console.log('Processed event dates:', {
+      eventId: event.id,
+      date_start: event.date_start
+    });
+
+    return event;
   }
 
   attendEvent(eventId: number, userId: number): Observable<any> {
