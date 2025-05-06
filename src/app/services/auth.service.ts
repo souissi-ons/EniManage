@@ -10,6 +10,7 @@ import { catchError, tap, map } from 'rxjs/operators';
 export class AuthService {
   private currentUserSubject = new BehaviorSubject<any>(null);
   public currentUser$ = this.currentUserSubject.asObservable();
+
   private apiUrl = 'http://localhost:8081/api/auth';
 
   constructor(private http: HttpClient, private router: Router) {
@@ -38,7 +39,6 @@ export class AuthService {
       });
     }
   }
-
   private clearAuth(): void {
     localStorage.removeItem('token');
     this.currentUserSubject.next(null);
@@ -78,8 +78,7 @@ export class AuthService {
   }
 
   logout(): void {
-    localStorage.removeItem('token');
-    this.currentUserSubject.next(null);
+    this.clearAuth();
     this.router.navigate(['/login']); // Navigate to /login after logout
   }
 
