@@ -20,7 +20,6 @@ const routes: Routes = [
   {
     path: 'login',
     component: LoginComponent,
-    canActivate: [NoAuthGuard],
   },
   {
     path: '',
@@ -71,11 +70,6 @@ const routes: Routes = [
       {
         path: 'events',
         component: EventsComponent,
-        canActivate: [RoleGuard],
-        data: { roles: ['STUDENT'] }
-      },
-      { path: 'feedback',
-        component: FeedbackComponent,
         canActivate: [RoleGuard],
         data: { roles: ['STUDENT'] },
       },
