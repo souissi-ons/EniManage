@@ -13,10 +13,15 @@ import { ProfileComponent } from './components/users/profile/profile.component';
 import { ClubMembersComponent } from './components/users/club-members/club-members.component';
 import { FeedbackComponent } from './components/events/feedback/feedback.component';
 import { RoleGuard } from './guards/role.guard';
+import { NoAuthGuard } from './guards/noAuth.guard';
 import { EventsComponent } from './components/events/events/events.component';
 
 const routes: Routes = [
-  { path: 'login', component: LoginComponent },
+  {
+    path: 'login',
+    component: LoginComponent,
+    canActivate: [NoAuthGuard],
+  },
   {
     path: '',
     canActivate: [AuthGuard],
@@ -25,43 +30,43 @@ const routes: Routes = [
         path: 'users',
         component: UsersComponent,
         canActivate: [RoleGuard],
-        data: { roles: ['ADMIN'] }
+        data: { roles: ['ADMIN'] },
       },
       {
         path: 'resources',
         component: ResourcesComponent,
         canActivate: [RoleGuard],
-        data: { roles: ['ADMIN'] }
+        data: { roles: ['ADMIN'] },
       },
       {
         path: 'rooms',
         component: SallesComponent,
         canActivate: [RoleGuard],
-        data: { roles: ['ADMIN'] }
+        data: { roles: ['ADMIN'] },
       },
       {
         path: 'admin-event',
         component: AdminEventManagementComponent,
         canActivate: [RoleGuard],
-        data: { roles: ['ADMIN'] }
+        data: { roles: ['ADMIN'] },
       },
       {
         path: 'admin-card',
         component: AdminEventCardComponent,
         canActivate: [RoleGuard],
-        data: { roles: ['ADMIN'] }
+        data: { roles: ['ADMIN'] },
       },
       {
         path: 'club-events',
         component: EventsClubComponent,
         canActivate: [RoleGuard],
-        data: { roles: ['CLUB'] }
+        data: { roles: ['CLUB'] },
       },
       {
         path: 'membership',
         component: ClubMembersComponent,
         canActivate: [RoleGuard],
-        data: { roles: ['CLUB'] }
+        data: { roles: ['CLUB'] },
       },
       {
         path: 'events',
@@ -72,23 +77,28 @@ const routes: Routes = [
       { path: 'feedback',
         component: FeedbackComponent,
         canActivate: [RoleGuard],
-        data: { roles: ['STUDENT'] }
+        data: { roles: ['STUDENT'] },
       },
-
+      {
+        path: 'feedback',
+        component: FeedbackComponent,
+        canActivate: [RoleGuard],
+        data: { roles: ['STUDENT'] },
+      },
       {
         path: 'chat',
         component: ChatComponent,
         canActivate: [RoleGuard],
-        data: { roles: ['CLUB', 'STUDENT'] }
+        data: { roles: ['CLUB', 'STUDENT'] },
       },
       {
         path: 'profile',
         component: ProfileComponent,
         canActivate: [RoleGuard],
-        data: { roles: ['ADMIN', 'CLUB', 'STUDENT'] }
+        data: { roles: ['ADMIN', 'CLUB', 'STUDENT'] },
       },
       { path: '', redirectTo: '/profile', pathMatch: 'full' },
-    ]
+    ],
   },
   { path: '**', redirectTo: '' },
 ];

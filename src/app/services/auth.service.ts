@@ -10,7 +10,6 @@ import { catchError, tap, map } from 'rxjs/operators';
 export class AuthService {
   private currentUserSubject = new BehaviorSubject<any>(null);
   public currentUser$ = this.currentUserSubject.asObservable();
-
   private apiUrl = 'http://localhost:8081/api/auth';
 
   constructor(private http: HttpClient, private router: Router) {
@@ -25,20 +24,31 @@ export class AuthService {
   }
   
   private initializeAuth(): void {
-    console.log('AuthService: Initializing authentication...');
     const token = localStorage.getItem('token');
     if (token) {
       this.validateToken(token).subscribe({
         next: (isValid) => {
           if (isValid) {
             this.fetchCurrentUser().subscribe();
+          } else {
+            this.clearAuth();
           }
         },
-        error: (err) => {
-          console.error('AuthService: Error loading user data:', err);
-        },
+        error: () => this.clearAuth(),
       });
     }
+  }
+
+  private clearAuth(): void {
+    localStorage.removeItem('token');
+    this.currentUserSubject.next(null);
+  }
+
+  private getHeaders(): HttpHeaders {
+    const token = this.getToken();
+    return new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+    });
   }
 
   fetchCurrentUser(): Observable<any> {
@@ -56,19 +66,19 @@ export class AuthService {
       );
   }
 
+  // auth.service.ts
   login(credentials: { email: string; password: string }): Observable<any> {
     return this.http.post(`${this.apiUrl}/login`, credentials).pipe(
-      map((response: any) => {
-        if (response && response.token) {
+      tap((response: any) => {
+        if (response?.token) {
           localStorage.setItem('token', response.token);
-          console.log('AuthService: Token retrieved:', response.token);
-          this.router.navigate(['/users']); // Navigate to /users after login
-          return response;
+          this.fetchCurrentUser().subscribe(() => {
+            this.router.navigate(['/profile']);
+          });
         }
-        return null;
       }),
       catchError((error) => {
-        console.error('AuthService: Login error:', error);
+        this.clearAuth();
         return throwError(() => error);
       })
     );
