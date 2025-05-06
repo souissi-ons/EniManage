@@ -9,8 +9,7 @@ export interface Event {
   description: string;
   date_start?: Date | string;
   date_end?: Date | string;
-  startDate?: Date | string; 
-  endDate?: Date | string;   
+   
   is_private: boolean;
   capacity: number;
   creator_id: number;

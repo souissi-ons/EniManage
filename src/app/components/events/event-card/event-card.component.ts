@@ -16,30 +16,28 @@ import { PopupComponent } from '../../common/popup/popup.component';
 export class EventCardComponent implements OnInit {
   @Input() event!: Event;
   @Output() updateNeeded = new EventEmitter<void>();
-  @Output() viewDetails = new EventEmitter<number>(); // 🛠️ Declare properly
-
+  @Output() viewDetails = new EventEmitter<number>();
+  
   showConfirmModal = false;
-  showFeedbackModal = false; // 🛠️ Fix: Declare missing property
-  feedbackComment = '';      // 🛠️ Fix: Declare missing property
-
+  showFeedbackModal = false;
+  feedbackComment = '';      
   currentUserId: number | null = null;
   loading = true;
   error = '';
-
+  
   constructor(
     private eventsService: EventsService,
     private authService: AuthService
   ) {}
-
+  
   ngOnInit() {
     this.loadCurrentUser();
   }
-
+  
   loadCurrentUser() {
     this.authService.currentUser$.subscribe({
       next: (user: any | null) => {
         this.currentUserId = user?.id || null;
-
         if (this.currentUserId) {
           console.log('User ID loaded:', this.currentUserId);
           this.loading = false;
@@ -56,62 +54,78 @@ export class EventCardComponent implements OnInit {
       }
     });
   }
-
+  
   getImageUrl(): string {
     if (this.event.imageUrl) {
       return this.eventsService.getEventImageUrl(this.event.imageUrl);
     }
     return 'assets/default-event.png';
   }
-
+  
   handleAttendClick() {
     if (!this.currentUserId) {
       console.error('No user ID available for participation');
       return;
     }
-
+  
     this.eventsService.attendEvent(this.event.id, this.currentUserId).subscribe({
       next: () => {
         this.event.isParticipating = true;
-        this.event.currentParticipants =
-          (this.event.currentParticipants || 0) + 1;
+        this.event.currentParticipants = (this.event.currentParticipants || 0) + 1;
         this.updateNeeded.emit();
-        this.showConfirmModal = false;
+        console.log('Successfully added to participants');
       },
-      error: (error: Error) => console.error('Erreur participation:', error),
+      error: (error: Error) => console.error('Error attending event:', error),
     });
   }
-
-  getButtonState() {
-    const eventDate = this.event.date_end ? new Date(this.event.date_end) : new Date();
-    if (eventDate <= new Date()) {
+  
+  getButtonState(): string {
+    const eventEndDate = this.event.date_end ? new Date(this.event.date_end) : null;
+    
+    if (!eventEndDate) {
+      console.warn('No valid end date found for event:', this.event);
       return 'feedback';
     }
-    return this.event.isParticipating ? 'attending' : 'attend';
+  
+    const now = new Date();
+    now.setMinutes(now.getMinutes() - 1); // Buffer for edge cases
+    return eventEndDate > now ? 'attend' : 'feedback';
   }
-
+  
   handleGiveFeedback() {
     this.showFeedbackModal = true;
   }
-
+  
   submitFeedback() {
     // TODO: Implement actual feedback logic
+    console.log('Submitting feedback:', this.feedbackComment);
+    // After submission is successful:
+    this.closeFeedbackModal();
   }
-
+  
   closeFeedbackModal() {
     this.showFeedbackModal = false;
     this.feedbackComment = '';
   }
-
+  
   handleViewDetails() {
     this.viewDetails.emit(this.event.id);
   }
-
-  get eventStatusClass() {
-    return {
-      'bg-green-100 text-green-800': this.event.status === 'ACCEPTED',
-      'bg-yellow-100 text-yellow-800': this.event.status === 'PENDING',
-      'bg-red-100 text-red-800': this.event.status === 'REJECTED',
-    };
+  handleButtonClick() {
+    const buttonState = this.getButtonState();
+    if (buttonState === 'attend') {
+            this.showConfirmModal = true;
+    } else if (buttonState === 'feedback') {
+      this.handleGiveFeedback();
+    }
   }
+  // Format date to a readable string
+  formatDate(dateString: string | Date): string {
+      const date = new Date(dateString);
+      return date.toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric'
+      });
+      }
 }

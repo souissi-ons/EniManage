@@ -51,7 +51,7 @@ function initializeApp(authService: AuthService) {
 }
 
 @NgModule({
-  declarations: [AppComponent, EventsComponent],
+  declarations: [AppComponent ],
   imports: [
     RequestEventComponent,
     BrowserModule,
