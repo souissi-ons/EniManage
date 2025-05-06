@@ -3,6 +3,8 @@ import { ChartConfiguration, ChartData } from 'chart.js';
 import { EventsService } from 'src/app/services/events.service';
 import { NgChartsModule } from 'ng2-charts';
 import { CommonModule } from '@angular/common';
+import { ActivatedRoute } from '@angular/router';
+
 
 interface EventStats {
   moyenneGlobale: number;
@@ -17,7 +19,7 @@ interface EventStats {
   selector: 'app-event-stats',
   templateUrl: './event-stats.component.html',
   standalone: true,
-  imports: [NgChartsModule, CommonModule], // Ajouter NgChartsModule ici
+  imports: [NgChartsModule, CommonModule], 
   styleUrls: ['./event-stats.component.css'],
 })
 export class EventStatsComponent implements OnInit {
@@ -126,11 +128,27 @@ export class EventStatsComponent implements OnInit {
     ],
   };
 
-  constructor(private eventsService: EventsService) {}
+  constructor(private eventsService: EventsService, private route:ActivatedRoute) {}
 
   ngOnInit(): void {
-    this.loadStats();
+    this.getEventIdFromRoute();
   }
+
+  // event-stats.component.ts
+private getEventIdFromRoute(): void {
+  this.route.params.subscribe(params => {
+    // Change from params['id'] to params['eventId']
+    this.eventId = +params['eventId']; 
+    
+    if (isNaN(this.eventId)) {
+      console.error('Invalid event ID in route:', params['eventId']);
+      // Handle error appropriately
+      return;
+    }
+    
+    this.loadStats();
+  });
+}
 
   loadStats(): void {
     this.eventsService.getEventStats(this.eventId).subscribe({
