@@ -1,12 +1,13 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common';
-import { Event } from 'src/app/models/event';
+import { Event, Resource } from 'src/app/models/event';
 import { EventsService } from 'src/app/services/events.service';
 import { EventStatus } from 'src/app/models/event-status';
 import { SalleService } from 'src/app/services/salle.service';
 import { Users } from 'src/app/models/users';
 import { UsersService } from 'src/app/services/users.service';
 import { Salle } from 'src/app/models/salle';
+import { finalize } from 'rxjs/operators';
 
 @Component({
   selector: 'app-admin-event-card',
@@ -19,9 +20,11 @@ import { Salle } from 'src/app/models/salle';
 export class AdminEventCardComponent {
   @Input() event!: Event;
   @Output() viewDetails = new EventEmitter<number>();
-  @Output() statusChange = new EventEmitter<{eventId: number, status: EventStatus}>();
+  @Output() statusChange = new EventEmitter<{eventId: number, status: EventStatus, success: boolean}>();
   selectedSalle: Salle | null = null;
-  creator: Users | null = null; // Ajout de la propriété pour le créateur
+  creator: Users | null = null; 
+  eventResources: Resource[] = [];
+  isProcessing: boolean = false;
 
   constructor(
     private salleService: SalleService,
@@ -32,7 +35,6 @@ export class AdminEventCardComponent {
   
   ngOnInit(): void {
     this.loadEventDetails();
-    console.log("creator",this.event)
   }
   
   loadEventDetails(): void {
@@ -49,12 +51,18 @@ export class AdminEventCardComponent {
     // Charger les détails du créateur
     if (this.event.creatorId) {
       this.userService.getUserById(this.event.creatorId).subscribe({
-        next: (user :Users) => {
+        next: (user: Users) => {
           this.creator = user;
         },
         error: (error: Error) => console.error('Error loading creator details:', error)
       });
     }
+    
+    // Charger les ressources de l'événement
+    this.eventsService.getEventResources(this.event.id).subscribe({
+      next: (resources) => this.eventResources = resources,
+      error: (error) => console.error('Error loading event resources:', error)
+    });
   }
 
   getImageUrl(filename: string | undefined): string {
@@ -69,11 +77,35 @@ export class AdminEventCardComponent {
   }
 
   acceptEvent(): void {
-    this.statusChange.emit({eventId: this.event.id, status: 'ACCEPTED'});
+    this.isProcessing = true;
+    this.eventsService.updateEventStatus(this.event.id, 'ACCEPTED')
+      .pipe(finalize(() => this.isProcessing = false))
+      .subscribe({
+        next: (updatedEvent) => {
+          this.event.status = 'ACCEPTED';
+          this.statusChange.emit({eventId: this.event.id, status: 'ACCEPTED', success: true});
+        },
+        error: (error) => {
+          console.error('Error accepting event:', error);
+          this.statusChange.emit({eventId: this.event.id, status: 'ACCEPTED', success: false});
+        }
+      });
   }
 
   rejectEvent(): void {
-    this.statusChange.emit({eventId: this.event.id, status: 'REJECTED'});
+    this.isProcessing = true;
+    this.eventsService.updateEventStatus(this.event.id, 'REJECTED')
+      .pipe(finalize(() => this.isProcessing = false))
+      .subscribe({
+        next: (updatedEvent) => {
+          this.event.status = 'REJECTED';
+          this.statusChange.emit({eventId: this.event.id, status: 'REJECTED', success: true});
+        },
+        error: (error) => {
+          console.error('Error rejecting event:', error);
+          this.statusChange.emit({eventId: this.event.id, status: 'REJECTED', success: false});
+        }
+      });
   }
 
   formatDate(date: any): string {

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, catchError, map, tap } from 'rxjs';
-import { Event, Feedback, Participant } from '../models/event';
+import { Event, Feedback, Participant, Resource } from '../models/event';
 import { AuthService } from './auth.service';
 import { EventStatus } from '../models/event-status';
 
@@ -45,7 +45,8 @@ export class EventsService {
   getEventById(id: number): Observable<Event> {
     return this.http.get<Event>(`${this.apiUrl}/${id}`).pipe(
       map(event => this.ensureCorrectDateFormat([event])[0]),
-      map(event => this.ensureCorrectStatusFormat([event])[0])
+      map(event => this.ensureCorrectStatusFormat([event])[0]),
+      map(event => this.normalizeEventRelations([event])[0]) // Add this line
     );
   }
   
@@ -140,6 +141,9 @@ export class EventsService {
     formData.append('image', file);
     return this.http.post<string>(`${this.apiUrl}/upload-image`, formData, { headers: this.getHeaders() });
   }
+  getEventResources(eventId: number): Observable<Resource[]> {
+    return this.http.get<Resource[]>(`${this.apiUrl}/${eventId}/resources`);
+  }
   
   getPendingEvents(): Observable<Event[]> {
     
@@ -151,24 +155,28 @@ export class EventsService {
 
   private normalizeEventRelations(events: Event[]): Event[] {
     return events.map(event => {
-      // Extract the IDs with proper fallbacks
+      // Create normalized creator object
       const creatorId = event.creator_id ?? event.creatorId ?? 0;
-      const salleId = event.room_id ?? event.salleId ?? 0;
+      const creator = event.creator ?? {
+        id: creatorId,
+        name: 'Unknown',
+        email: '',
+        phone: ''
+      };
   
-      // Create the normalized object without the duplicate properties
+      // Create normalized location object
+      const salleId = event.room_id ?? event.salleId ?? 0;
+      const salle = event.salle ?? {
+        id: salleId,
+        name: 'Unknown',
+        batiment: ''
+      };
+  
       return {
         ...event,
-        creator: event.creator ?? {
-          id: creatorId,
-          name: 'Unknown',
-          email: ''
-        },
-        salle: event.salle ?? {
-          id: salleId,
-          name: 'Unknown',
-          batiment: ''
-        },
-        // Explicitly set to undefined (they're optional in the interface)
+        creator,
+        salle,
+        // Clean up duplicate properties
         creator_id: undefined,
         creatorId: undefined,
         room_id: undefined,
@@ -176,7 +184,6 @@ export class EventsService {
       };
     });
   }
-
   updateEventStatus(eventId: number, status: EventStatus): Observable<Event> {
     console.log(`Updating event ${eventId} status to ${status}`);
     const backendStatus = status.toLowerCase() as 'pending' | 'accepted' | 'rejected';

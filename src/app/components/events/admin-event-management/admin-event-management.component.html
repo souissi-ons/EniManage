@@ -1,61 +1,28 @@
-<div class="container mx-auto px-4 py-8">
-  <h1 class="text-3xl font-bold text-gray-800 mb-6">Event Management</h1>
- 
-  
+<div class="container mx-auto px-8 py-10 max-w-6xl">
+  <h1 class="text-3xl font-bold text-gray-800 mb-8">Pending Events Management</h1>
   
   <!-- Loading state -->
-  <div *ngIf="loading" class="flex justify-center py-8">
+  <div *ngIf="loading" class="flex justify-center py-12">
     <div class="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
   </div>
   
   <!-- Error state -->
-  <div *ngIf="error" class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-6">
+  <div *ngIf="error" class="bg-red-100 border border-red-400 text-red-700 px-6 py-4 rounded-lg mb-8">
     <p>{{ error }}</p>
-    <button class="mt-2 text-sm text-blue-600 hover:underline" (click)="loadEvents()">Try Again</button>
+    <button class="mt-3 text-sm text-blue-600 hover:underline" (click)="loadPendingEvents()">Try Again</button>
   </div>
   
-  <!-- Content based on active tab -->
-  <div *ngIf="!loading && !error" class="bg-white rounded-lg shadow-md p-6 mb-8">
+  <!-- Content -->
+  <div *ngIf="!loading && !error" class="bg-white rounded-lg shadow-md p-8 mb-10">
     <!-- Pending Events -->
-    <div *ngIf="activeTab === 'pending'">
-      <div *ngIf="pendingEvents.length === 0" class="text-gray-500 py-4">
+    <div>
+      <div *ngIf="pendingEvents.length === 0" class="text-gray-500 py-6 text-center">
         No pending events to review.
       </div>
       
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
         <app-admin-event-card 
           *ngFor="let event of pendingEvents" 
-          [event]="event"
-          (viewDetails)="handleViewDetails($event)"
-          (statusChange)="handleStatusChange($event)">
-        </app-admin-event-card>
-      </div>
-    </div>
-    
-    <!-- Placeholder for other tabs - replace with actual content when implemented -->
-    <div *ngIf="activeTab === 'accepted'">
-      <div *ngIf="acceptedEvents.length === 0" class="text-gray-500 py-4">
-        No accepted events to display.
-      </div>
-      
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        <app-admin-event-card 
-          *ngFor="let event of acceptedEvents" 
-          [event]="event"
-          (viewDetails)="handleViewDetails($event)"
-          (statusChange)="handleStatusChange($event)">
-        </app-admin-event-card>
-      </div>
-    </div>
-    
-    <div *ngIf="activeTab === 'rejected'">
-      <div *ngIf="rejectedEvents.length === 0" class="text-gray-500 py-4">
-        No rejected events to display.
-      </div>
-      
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        <app-admin-event-card 
-          *ngFor="let event of rejectedEvents" 
           [event]="event"
           (viewDetails)="handleViewDetails($event)"
           (statusChange)="handleStatusChange($event)">
@@ -65,84 +32,101 @@
   </div>
   
   <!-- Event Details Modal -->
-  <div *ngIf="showDetailsModal && selectedEvent" class="fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center z-50">
-    <div class="bg-white rounded-lg w-full max-w-3xl max-h-screen overflow-y-auto p-6">
-      <div class="flex justify-between items-center mb-4">
-        <h3 class="text-2xl font-bold text-gray-800">Event Details</h3>
-        <button (click)="closeDetailsModal()" class="text-gray-500 hover:text-gray-700">
+  <div *ngIf="showDetailsModal && selectedEvent" class="fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center z-50 p-4">
+    <div class="bg-white rounded-lg w-full max-w-4xl max-h-screen overflow-y-auto p-8">
+      <div class="flex justify-between items-center mb-6">
+        <h2 class="text-2xl font-bold text-gray-800">Event Details</h2>
+        <button class="text-gray-500 hover:text-gray-700" (click)="closeDetailsModal()">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
           </svg>
         </button>
       </div>
       
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
         <div class="md:col-span-1">
           <img 
-            class="w-full h-48 object-cover rounded-lg" 
+            class="w-full h-56 object-cover rounded-lg shadow" 
             [src]="getImageUrl(selectedEvent.imageUrl)" 
             alt="Event Image"
             (error)="handleImageError($event)"
           />
           
           <!-- Status badge -->
-          <div class="mt-3 flex justify-center">
-            <span class="px-3 py-1 text-sm font-semibold rounded-full"
-                  [ngClass]="{
-                    'bg-yellow-100 text-yellow-800': selectedEvent.status === 'PENDING',
-                    'bg-green-100 text-green-800': selectedEvent.status === 'ACCEPTED',
-                    'bg-red-100 text-red-800': selectedEvent.status === 'REJECTED'
-                  }">
+          <div class="mt-4 flex justify-center">
+            <span class="px-4 py-2 text-sm font-semibold rounded-full bg-yellow-100 text-yellow-800">
               {{ selectedEvent.status }}
             </span>
           </div>
           
-          <!-- Creator info (if available) -->
-          <div *ngIf="selectedEvent.creator" class="mt-4 p-3 bg-gray-50 rounded-lg">
-            <h4 class="text-sm font-semibold text-gray-700 mb-2">Creator</h4>
-            <div class="text-sm">
-              <p class="mb-1"><span class="font-medium">Name:</span> {{ selectedEvent.creator.name }}</p>
-              <p><span class="font-medium">Email:</span> {{ selectedEvent.creator.email }}</p>
-              <p><span class="font-medium">Phone Number:</span> {{ selectedEvent.creator.phone }}</p>
-
+          <div *ngIf="selectedEvent.creator" class="mt-6 p-4 bg-gray-50 rounded-lg shadow-sm">
+            <h4 class="text-sm font-semibold text-gray-700 mb-3">Creator</h4>
+            <div class="text-sm space-y-2">
+              <p *ngIf="selectedEvent.creator.name"><span class="font-medium">Name:</span> {{ selectedEvent.creator.name }}</p>
+              <p *ngIf="selectedEvent.creator.email"><span class="font-medium">Email:</span> {{ selectedEvent.creator.email }}</p>
+              <p *ngIf="selectedEvent.creator.phone"><span class="font-medium">Phone:</span> {{ selectedEvent.creator.phone }}</p>
             </div>
           </div>
           
           <!-- Location info (if available) -->
-          <div *ngIf="selectedEvent.salle" class="mt-3 p-3 bg-gray-50 rounded-lg">
-            <h4 class="text-sm font-semibold text-gray-700 mb-2">Location</h4>
-            <div class="text-sm">
-              <p class="mb-1"><span class="font-medium">Name:</span> {{ selectedEvent.salle.name }}</p>
+          <div *ngIf="selectedEvent.salle" class="mt-4 p-4 bg-gray-50 rounded-lg shadow-sm">
+            <h4 class="text-sm font-semibold text-gray-700 mb-3">Location</h4>
+            <div class="text-sm space-y-2">
+              <p><span class="font-medium">Name:</span> {{ selectedEvent.salle.name }}</p>
               <p *ngIf="selectedEvent.salle.batiment"><span class="font-medium">Building:</span> {{ selectedEvent.salle.batiment }}</p>
             </div>
           </div>
         </div>
         
         <div class="md:col-span-2">
-          <div class="mb-4">
-            <h4 class="text-sm font-semibold text-gray-500">Title</h4>
-            <p class="text-lg font-semibold">{{ selectedEvent.title }}</p>
+          <div class="mb-6">
+            <h4 class="text-sm font-semibold text-gray-500 mb-1">Title</h4>
+            <p class="text-xl font-semibold text-gray-800">{{ selectedEvent.title }}</p>
           </div>
           
-          <div class="mb-4">
-            <h4 class="text-sm font-semibold text-gray-500">Description</h4>
-            <p class="whitespace-pre-line">{{ selectedEvent.description }}</p>
+          <div class="mb-6">
+            <h4 class="text-sm font-semibold text-gray-500 mb-1">Description</h4>
+            <p class="whitespace-pre-line text-gray-700">{{ selectedEvent.description }}</p>
           </div>
           
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-            <div>
-              <h4 class="text-sm font-semibold text-gray-500">Start Date</h4>
-              <p class="mt-1 text-sm text-gray-800">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+            <div class="p-4 bg-gray-50 rounded-lg">
+              <h4 class="text-sm font-semibold text-gray-500 mb-2">Start Date</h4>
+              <p class="text-gray-800">
                 {{ formatDate(selectedEvent.date_start || selectedEvent.dateStart) }}
               </p>
             </div>
             
-            <div>
-              <h4 class="text-sm font-semibold text-gray-500">End Date</h4>
-              <p class="mt-1 text-sm text-gray-800">
+            <div class="p-4 bg-gray-50 rounded-lg">
+              <h4 class="text-sm font-semibold text-gray-500 mb-2">End Date</h4>
+              <p class="text-gray-800">
                 {{ formatDate(selectedEvent.date_end || selectedEvent.dateEnd) }}
               </p>
             </div>
           </div>
           
+          <!-- Action buttons -->
+          <div class="flex gap-4 mt-8">
+            <button 
+              class="flex-1 py-3 bg-green-600 text-white rounded-lg font-medium hover:bg-green-700 transition-colors"
+              (click)="updateEventStatus(selectedEvent.id, 'ACCEPTED')">
+              Accept Event
+            </button>
+            
+            <button 
+              class="flex-1 py-3 bg-red-600 text-white rounded-lg font-medium hover:bg-red-700 transition-colors"
+              (click)="updateEventStatus(selectedEvent.id, 'REJECTED')">
+              Reject Event
+            </button>
+            
+            <button 
+              class="flex-1 py-3 bg-gray-200 text-gray-800 rounded-lg font-medium hover:bg-gray-300 transition-colors"
+              (click)="closeDetailsModal()">
+              Close
+            </button>
+          </div>
         </div>
+      </div>
+    </div>
+  </div>
+</div>

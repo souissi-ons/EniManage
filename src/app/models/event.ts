@@ -16,9 +16,10 @@ export interface Salle {
 }
 
 export interface Resource {
-  id: number;
-  name: string;
+  resourceId: number;  // Changed from 'id'
+  resourceName: string; // Changed from 'name'
   quantity: number;
+  eventId: number;
 }
 
 export interface Event {
