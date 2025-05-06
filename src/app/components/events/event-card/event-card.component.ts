@@ -12,6 +12,7 @@ import { PopupComponent } from '../../common/popup/popup.component';
   standalone: true,
   imports: [CommonModule, FormsModule, PopupComponent],
   styleUrls: ['./event-card.component.css']
+
 })
 export class EventCardComponent implements OnInit {
   @Input() event!: Event;
@@ -26,6 +27,7 @@ export class EventCardComponent implements OnInit {
     private eventsService: EventsService,
     private authService: AuthService
   ) {}
+
 
   ngOnInit() {
     this.loadCurrentUser();
@@ -71,11 +73,12 @@ export class EventCardComponent implements OnInit {
     this.eventsService.attendEvent(this.event.id, this.currentUserId).subscribe({
       next: () => {
         this.event.isParticipating = true;
-        this.event.currentParticipants = (this.event.currentParticipants || 0) + 1;
+        this.event.currentParticipants =
+          (this.event.currentParticipants || 0) + 1;
         this.updateNeeded.emit();
         this.showConfirmModal = false;
       },
-      error: (error: Error) => console.error('Erreur participation:', error)
+      error: (error: Error) => console.error('Erreur participation:', error),
     });
   }
 
@@ -85,5 +88,26 @@ export class EventCardComponent implements OnInit {
       return 'feedback';
     }
     return this.event.isParticipating ? 'attending' : 'attend';
+  handleGiveFeedback() {
+    this.showFeedbackModal = true;
+  }
+
+  submitFeedback() {}
+
+  closeFeedbackModal() {
+    this.showFeedbackModal = false;
+    this.feedbackComment = '';
+  }
+
+  handleViewDetails() {
+    this.viewDetails.emit(this.event.id);
+  }
+
+  get eventStatusClass() {
+    return {
+      'bg-green-100 text-green-800': this.event.status === 'ACCEPTED',
+      'bg-yellow-100 text-yellow-800': this.event.status === 'PENDING',
+      'bg-red-100 text-red-800': this.event.status === 'REJECTED',
+    };
   }
 }
