@@ -8,7 +8,7 @@ import { AuthService } from 'src/app/services/auth.service';
   templateUrl: './sidebar.component.html',
   styleUrls: ['./sidebar.component.css'],
   standalone: true,
-  imports: [RouterLink,CommonModule],
+  imports: [RouterLink, CommonModule],
 })
 export class SidebarComponent {
   role: string | null = null;
@@ -17,7 +17,7 @@ export class SidebarComponent {
   constructor(private authService: AuthService, private router: Router) {}
 
   ngOnInit() {
-    this.authService.currentUser$.subscribe(user => {
+    this.authService.currentUser$.subscribe((user) => {
       this.role = user?.role;
       this.setMenuItems();
     });
@@ -28,15 +28,35 @@ export class SidebarComponent {
       this.menuItems = [
         { label: 'Profile', route: '/profile', icon: 'fas fa-user' },
         { label: 'User Management', route: '/users', icon: 'fas fa-users-cog' },
-        { label: 'Resource Management', route: '/resources', icon: 'fas fa-toolbox' },
-        { label: 'Room Management', route: '/rooms', icon: 'fas fa-door-closed' },
-        { label: 'Event Management', route: '/admin-event', icon: 'fas fa-calendar' },
+        {
+          label: 'Resource Management',
+          route: '/resources',
+          icon: 'fas fa-toolbox',
+        },
+        {
+          label: 'Room Management',
+          route: '/rooms',
+          icon: 'fas fa-door-closed',
+        },
+        {
+          label: 'Event Management',
+          route: '/admin-event',
+          icon: 'fas fa-calendar',
+        },
       ];
     } else if (this.role === 'CLUB') {
       this.menuItems = [
         { label: 'Profile', route: '/profile', icon: 'fas fa-user' },
-        { label: 'Club Events', route: '/club-events', icon: 'fas fa-calendar-alt' },
-        { label: 'Member Management', route: '/membership', icon: 'fas fa-users' },
+        {
+          label: 'Club Events',
+          route: '/club-events',
+          icon: 'fas fa-calendar-alt',
+        },
+        {
+          label: 'Member Management',
+          route: '/membership',
+          icon: 'fas fa-users',
+        },
         { label: 'Chat Channel', route: '/chat', icon: 'fas fa-comments' },
       ];
     } else if (this.role === 'STUDENT') {
