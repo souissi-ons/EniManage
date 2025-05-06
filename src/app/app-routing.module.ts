@@ -14,6 +14,7 @@ import { ClubMembersComponent } from './components/users/club-members/club-membe
 import { FeedbackComponent } from './components/events/feedback/feedback.component';
 import { RoleGuard } from './guards/role.guard';
 import { NoAuthGuard } from './guards/noAuth.guard';
+import { EventsComponent } from './components/events/events/events.component';
 
 const routes: Routes = [
   {
@@ -69,7 +70,12 @@ const routes: Routes = [
       },
       {
         path: 'events',
-        component: EventsClubComponent,
+        component: EventsComponent,
+        canActivate: [RoleGuard],
+        data: { roles: ['STUDENT'] }
+      },
+      { path: 'feedback',
+        component: FeedbackComponent,
         canActivate: [RoleGuard],
         data: { roles: ['STUDENT'] },
       },

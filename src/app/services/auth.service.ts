@@ -16,6 +16,13 @@ export class AuthService {
     this.initializeAuth();
   }
 
+  private getHeaders(): HttpHeaders {
+    const token = this.getToken();
+    return new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+    });
+  }
+  
   private initializeAuth(): void {
     const token = localStorage.getItem('token');
     if (token) {
