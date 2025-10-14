@@ -1,27 +1,36 @@
-# GestionEvents
+# EniManage
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 15.2.11.
+**EniManage** est une application **Front-End Angular** développée pour la **gestion des événements** au sein d’Enicarthage.  
+Elle permet d’administrer les **utilisateurs**, **salles**, **ressources**, **événements**, et de gérer les **feedbacks** des participants.  
 
-## Development server
+Ce document décrit les étapes d’installation, d’exécution et de contribution au projet.
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+---
 
-## Code scaffolding
+## Aperçu du projet
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+- **Framework :** Angular  
+- **Langage :** TypeScript / HTML / SCSS  
+- **Architecture :** Modulaire et orientée composants
+- **Backend associé :** [EniManageBackEnd (Spring Boot)](https://github.com/souissi-ons/EniManageBackEnd)
 
-## Build
+---
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+## Fonctionnalités principales
 
-## Running unit tests
+- **Gestion des utilisateurs** : création, modification et suppression des comptes  
+- **Gestion des salles** : ajout, réservation et suivi des espaces  
+- **Gestion des ressources** : gestion du matériel et des équipements  
+- **Organisation des événements** : planification, suivi et historique complet  
+- **Feedback** : collecte et visualisation des retours des participants  
+- **Notifications** : mise à jour en temps réel (intégration avec le backend)  
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+---
 
-## Running end-to-end tests
+## Prérequis
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+Avant de démarrer le projet, assure-toi d’avoir installé :
 
-## Further help
+- **Node.js** (version 14 ou supérieure recommandée)  
+- **npm** (inclus avec Node.js)
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
